@@ -1,0 +1,19 @@
+{
+  "name": "is-tool",
+  "version": "0.1.0",
+  "description": "Load and Save ItemSense configuraiton",
+  "main": "is-tool",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "is-tool": "./bin/is-tool.js"
+  },
+  "dependencies": {
+    "async": "^2.1.1",
+    "commander": "^2.9.0",
+    "request": "^2.75.0"
+  }
+}
