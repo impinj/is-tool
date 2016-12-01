@@ -24,26 +24,24 @@ function saveConfig(saveFile, userName, password, ipAddr){
   }else {
     saveFileName = saveFile;
   }
-
   var options = {
     auth: (userName || "admin") + ":" + (password || "admindefault"),
     host: ipAddr || "127.0.0.1",
-    port: 80
+    port: 80,
+    method:'GET'
   };
   console.log("Using values:\n" +
               "   ItemSense IP: " + options.host + "\n" +
               "           Auth: " + options.auth + "\n" +
               "       Savefile: " + saveFileName + "\n");
-
   gatherConfig(options);
 }
 
 function gatherConfig(options){
-  options.method = 'GET';
   async.eachOf(endpoints, function(endpoint, confCategory, callback){
-    console.log("Requesting: " + confCategory);
+  //  console.log("Requesting: " + confCategory);
     performRequest(confCategory, endpoint, options, "", function(responseJson, confCategory){
-      buildJsonConfObject(responseJson, confCategory);
+      buildJsonConfObject(JSON.parse(responseJson), confCategory);
       callback();
     });
   },
@@ -55,15 +53,16 @@ function gatherConfig(options){
 
 function buildJsonConfObject(responseJson, confCategory){
   itemsenseConfig[confCategory] = responseJson;
-  console.log("Adding config: "+ confCategory + ":" + responseJson);
+//  console.log("Adding config: "+ confCategory + ":" + responseJson);
 }
 
 function writeJson(){
-  console.log("Writing to " + saveFileName + ": "  + JSON.stringify(itemsenseConfig));
+  //console.log("Writing to " + saveFileName + ": "  + JSON.stringify(itemsenseConfig));
 
-  fs.writeFile(saveFileName.toString(), JSON.stringify(itemsenseConfig), (err)=>{
+  fs.writeFile(saveFileName.toString(), JSON.stringify(itemsenseConfig, null, 2), (err)=>{
     if (err){
       return console.log(err);
     }
   });
+  console.log("Written file: " + saveFileName);
 }

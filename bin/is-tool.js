@@ -5,8 +5,8 @@ var path = require('path');
 
 
 program
-  .usage('<load|save> <file> [options]')
+  .usage('<cmd> [options]')
   .command('load <file>', 'load configuration file into ItemSense')
   .command('save [file]', 'save configuration file into ItemSense')
-  //.command('readermv [file1]', 'save configuration file into ItemSense')
+  .command('readermv <reader_name> <new_facility>', 'Move a reader from one facility to another')
   .parse(process.argv);
