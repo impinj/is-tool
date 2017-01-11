@@ -1,9 +1,7 @@
-var endpoints = require('../config/endpoint-config').load;
-var performRequest = require('../lib/http-query');
+var Itemsense = require('itemsense-node');
+var loadIsConfig = require('../lib/load');
 var program = require('commander');
 
-var fs = require('fs');
-var async = require('async');
 
 program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
@@ -13,16 +11,18 @@ program
   .option('-c --convert', "Convert recipe and reader configs to 2016r6 format.")
   .parse(process.argv)
 
+if (!program.args || program.args.length == 0) {
+  console.log("No file specified to load.")
+  process.exit(1)
+}
+
+
+
 //console.log(JSON.stringify(program))
-loadConfig(program.args, program.user, program.pass, program.ip, program.facility)
+loadIsConfig(program.args, program.user, program.pass, program.ip, program.facility)
 
 
-function loadConfig(loadFile, userName, password, ipAddr, facility) {
-  if (!loadFile || loadFile.length == 0) {
-    console.log("No file specified to load.")
-    process.exit(1)
-  }
-
+function loadConfig(loadFile, userName, password, ipAddr, facility){
   var options = {
     auth: (userName || "admin") + ":" + (password || "admindefault"),
     host: ipAddr || "127.0.0.1",
