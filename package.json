@@ -1,6 +1,6 @@
 {
   "name": "impinj-is-tool",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Load and Save ItemSense configuration",
   "main": "is-tool",
   "scripts": {
