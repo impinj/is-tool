@@ -28,12 +28,16 @@ loadFile(program.args[0])
   reason => { return Promise.reject("Couldn't read file: " + reason) }
 )
 .then(
-  result => console.log("load request complete."),
+  result => console.log("Load request complete."),
   reason => {
-    return Promise.reject(
-      reason.message ?
-      "Loading config failed: " + reason.message + "\n" + JSON.stringify(reason.error) : reason
-    );
+    let errorMsg ="";
+    if(reason.message){
+      errorMsg = "Loading config failed: " + reason.message;
+      if(reason.error) errorMsg += "\n" + JSON.stringify(reason.error);
+    }else{
+      errorMsg = reason;
+    }
+    return Promise.reject(errorMsg);
   }
 )
 .catch(
