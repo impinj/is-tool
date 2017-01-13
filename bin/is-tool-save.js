@@ -27,10 +27,7 @@ var itemsenseConfig = {
 console.log(`Connecting to ItemSense: ${JSON.stringify(itemsenseConfig)}`);
 var itemsense = new Itemsense(itemsenseConfig);
 if(!itemsense) throw new Error("itemsense object is null");
-console.log(Object.getOwnPropertyNames(itemsense));
 
-
-//console.log(JSON.stringify(program))
 saveIsConfig(itemsense, program.args).then(
   fileLocation => console.log("Wrote: " + fileLocation),
   reason => console.log("Failed: " + reason)

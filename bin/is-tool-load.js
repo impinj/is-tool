@@ -1,7 +1,7 @@
 var Itemsense = require('itemsense-node');
 var loadIsConfig = require('../lib/load');
 var program = require('commander');
-
+var fs = require('fs');
 
 program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
@@ -16,50 +16,37 @@ if (!program.args || program.args.length == 0) {
   process.exit(1)
 }
 
+var itemsenseConfig = {
+  "username": (program.user || "admin"),
+  "password": (program.pass || "admindefault"),
+  "itemsenseUrl": `http://${program.ip}/itemsense`
+};
+var itemsense = new Itemsense(itemsenseConfig);
+loadFile(program.args[0])
+.then(
+  config => { return loadIsConfig(itemsense, config, program.facility) },
+  reason => { return Promise.reject("Couldn't read file: " + reason) }
+)
+.then(
+  result => console.log("load request complete."),
+  reason => {
+    return Promise.reject(
+      reason.message ?
+      "Loading config failed: " + reason.message + "\n" + JSON.stringify(reason.error) : reason
+    );
+  }
+)
+.catch(
+  reason => console.log("Failure: \n  " + reason)
+);
 
 
-//console.log(JSON.stringify(program))
-loadIsConfig(program.args, program.user, program.pass, program.ip, program.facility)
-
-
-function loadConfig(loadFile, userName, password, ipAddr, facility){
-  var options = {
-    auth: (userName || "admin") + ":" + (password || "admindefault"),
-    host: ipAddr || "127.0.0.1",
-    port: 80,
-    facility: facility
-  };
-  console.log("Using values:\n" +
-    "   ItemSense IP: " + options.host + "\n" +
-    "           Auth: " + options.auth + "\n" +
-    "       loadFile: " + loadFile + "\n");
-
-  gatherConfig(options, readJson(loadFile));
-}
-
-function gatherConfig(options, conf) {
-  options.method = 'PUT';
-  async.eachOf(endpoints, function(endpointURL, confCategory, callback) {
-    if(conf[confCategory]){
-      async.each(conf[confCategory], function(data, callback) {
-          if (options['facility'] && confCategory == 'readerDefinitions') {
-            console.log('Adding to new facility: ' + options['facility'])
-            data['facility'] = options['facility'];
-          }
-          performRequest(confCategory, endpointURL, options, data, function(responseJson, confCategory) {
-            callback();
-          });
-        },
-        function(err, result) {
-          console.log("All " + confCategory + " loaded.")
-        });
-    }
-  },
-  function(err, result) {
-    console.log("Load complete.")
+function loadFile(filename){
+  return new Promise(function(resolve, reject){
+    console.log('Reading ' + filename);
+    fs.readFile(filename, 'utf8', (err,data)=>{
+      if(err) reject(err)
+      else resolve(JSON.parse(data));
+    });
   });
-}
-
-function readJson(loadFile) {
-  return JSON.parse(fs.readFileSync(loadFile.toString(), 'utf8'));
 }
