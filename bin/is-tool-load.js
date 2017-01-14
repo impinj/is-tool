@@ -1,65 +1,56 @@
-var endpoints = require('../config/endpoint-config').load;
-var performRequest = require('../lib/http-query');
+var Itemsense = require('itemsense-node');
+var loadIsConfig = require('../lib/load');
 var program = require('commander');
-
 var fs = require('fs');
-var async = require('async');
 
 program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
   .option('-u --user <user>', 'ItemSense Username')
   .option('-p --pass <pass>', 'ItemSense password')
-  .option('-f --facility <facility>', 'ItemSense password')
+  .option('-f --facility <facility>', 'Name of new facility in which to add readers')
   .option('-c --convert', "Convert recipe and reader configs to 2016r6 format.")
   .parse(process.argv)
 
-//console.log(JSON.stringify(program))
-loadConfig(program.args, program.user, program.pass, program.ip, program.facility)
-
-
-function loadConfig(loadFile, userName, password, ipAddr, facility) {
-  if (!loadFile || loadFile.length == 0) {
-    console.log("No file specified to load.")
-    process.exit(1)
-  }
-
-  var options = {
-    auth: (userName || "admin") + ":" + (password || "admindefault"),
-    host: ipAddr || "127.0.0.1",
-    port: 80,
-    facility: facility
-  };
-  console.log("Using values:\n" +
-    "   ItemSense IP: " + options.host + "\n" +
-    "           Auth: " + options.auth + "\n" +
-    "       loadFile: " + loadFile + "\n");
-
-  gatherConfig(options, readJson(loadFile));
+if (!program.args || program.args.length == 0) {
+  console.log("No file specified to load.")
+  process.exit(1)
 }
 
-function gatherConfig(options, conf) {
-  options.method = 'PUT';
-  async.eachOf(endpoints, function(endpointURL, confCategory, callback) {
-    if(conf[confCategory]){
-      async.each(conf[confCategory], function(data, callback) {
-          if (options['facility'] && confCategory == 'readerDefinitions') {
-            console.log('Adding to new facility: ' + options['facility'])
-            data['facility'] = options['facility'];
-          }
-          performRequest(confCategory, endpointURL, options, data, function(responseJson, confCategory) {
-            callback();
-          });
-        },
-        function(err, result) {
-          console.log("All " + confCategory + " loaded.")
-        });
+var itemsenseConfig = {
+  "username": (program.user || "admin"),
+  "password": (program.pass || "admindefault"),
+  "itemsenseUrl": `http://${program.ip}/itemsense`
+};
+var itemsense = new Itemsense(itemsenseConfig);
+loadFile(program.args[0])
+.then(
+  config => { return loadIsConfig(itemsense, config, program.facility) },
+  reason => { return Promise.reject("Couldn't read file: " + reason) }
+)
+.then(
+  result => console.log("Load request complete."),
+  reason => {
+    let errorMsg ="";
+    if(reason.message){
+      errorMsg = "Loading config failed: " + reason.message;
+      if(reason.error) errorMsg += "\n" + JSON.stringify(reason.error);
+    }else{
+      errorMsg = reason;
     }
-  },
-  function(err, result) {
-    console.log("Load complete.")
-  });
-}
+    return Promise.reject(errorMsg);
+  }
+)
+.catch(
+  reason => console.log("Failure: \n  " + reason)
+);
 
-function readJson(loadFile) {
-  return JSON.parse(fs.readFileSync(loadFile.toString(), 'utf8'));
+
+function loadFile(filename){
+  return new Promise(function(resolve, reject){
+    console.log('Reading ' + filename);
+    fs.readFile(filename, 'utf8', (err,data)=>{
+      if(err) reject(err)
+      else resolve(JSON.parse(data));
+    });
+  });
 }
