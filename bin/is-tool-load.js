@@ -7,7 +7,7 @@ program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
   .option('-u --user <user>', 'ItemSense Username')
   .option('-p --pass <pass>', 'ItemSense password')
-  .option('-f --facility <facility>', 'ItemSense password')
+  .option('-f --facility <facility>', 'Name of new facility in which to add readers')
   .option('-c --convert', "Convert recipe and reader configs to 2016r6 format.")
   .parse(process.argv)
 
