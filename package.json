@@ -1,13 +1,13 @@
 {
-  "name": "impinj-is-tool",
-  "version": "0.2.1",
+  "name": "is-tool",
+  "version": "0.2.2",
   "description": "Load and Save ItemSense configuration",
-  "main": "is-tool",
+  "main": "is-tool-lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bin": {
     "is-tool": "./bin/is-tool.js"
   },
@@ -16,5 +16,7 @@
     "commander": "^2.9.0",
     "request": "^2.75.0",
     "itemsense-node": "^1.4.0"
-  }
+  },
+  "publishConfig":{"registry":"https://artifactory.impinj.com/artifactory/api/npm/npm-local"}
+
 }

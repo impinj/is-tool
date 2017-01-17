@@ -50,7 +50,8 @@ function loadFile(filename){
     console.log('Reading ' + filename);
     fs.readFile(filename, 'utf8', (err,data)=>{
       if(err) reject(err)
-      else resolve(JSON.parse(data));
+      //else resolve(JSON.parse(data));
+      else resolve("some bad string");
     });
   });
 }
