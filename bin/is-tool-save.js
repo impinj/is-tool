@@ -30,5 +30,5 @@ if(!itemsense) throw new Error("itemsense object is null");
 
 saveIsConfig(itemsense, program.args).then(
   fileLocation => console.log("Wrote: " + fileLocation),
-  reason => console.log("Failed: " + reason)
+  reason => console.log("Failure:\n" + reason)
 );

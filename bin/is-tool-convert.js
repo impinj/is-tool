@@ -6,9 +6,9 @@ var fs = require('fs');
 var path = require('path');
 
 program
-  .description("Convert an ItemSense 2016r4 config file to 2016r6 format. The" +
-  " tool writes the converted file to the same directory as the input file but " +
-  "adds \'-converted\' to the file name.")
+  .description("Convert an ItemSense 2016r4 config file to 2016r6 format. The "
+  + "tool writes the converted file to the same directory as the input file "
+  + "but adds \'-converted\' to the file name.")
   .parse(process.argv)
 
 if (!program.args || program.args.length == 0) {
@@ -23,10 +23,10 @@ loadFile(program.args[0]).then(
   convertedConfig => { return writeFile(convertedConfig, program.args[0]) }
 )
 .then(
-  (newfilename) => console.log("Wrote " + newfilename)
+  newfilename => console.log("Wrote " + newfilename)
 )
 .catch(
-  reason => console.log("Failure during convertion: \n  " + reason.stack + "\n")
+  reason => console.log("Failure during convertion: \n" + reason.stack + "\n")
 )
 
 function loadFile(filename){
@@ -39,12 +39,13 @@ function loadFile(filename){
   });
 }
 
-function writeFile(convertedConfig, filename){
+function writeFile(convertedConf, filename){
   return new Promise(function(resolve, reject){
     console.log("Writing converted file");
     var parsed = path.parse(filename);
-    let newfilename = (parsed.dir == '' ?  "" : parsed.dir + "/") + parsed.name + "-converted" + parsed.ext;
-    fs.writeFile(newfilename, JSON.stringify(convertedConfig, null, 2), (err) => {
+    let newfilename = (parsed.dir == '' ?  "" : parsed.dir + "/") + parsed.name
+      + "-converted" + parsed.ext;
+    fs.writeFile(newfilename, JSON.stringify(convertedConf, null, 2), (err) => {
       if(err) reject(err);
       else resolve(newfilename);
     })

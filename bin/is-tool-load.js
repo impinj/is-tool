@@ -9,7 +9,6 @@ program
   .option('-u --user <user>', 'ItemSense Username')
   .option('-p --pass <pass>', 'ItemSense password')
   .option('-f --facility <facility>', 'Name of new facility in which to add readers')
-  .option('-c --r4tor6', "Convert recipe and reader configs to 2016r6 format.")
   .parse(process.argv)
 
 if (!program.args || program.args.length == 0) {
@@ -26,19 +25,12 @@ var itemsenseConfig = {
 loadFile(program.args[0])
 .then(
   config => {
-    return program.r4tor6 ? converter(config) : Promise.resolve(config);
-  }
-)
-.then(
-  config => {
     var itemsense = new Itemsense(itemsenseConfig);
-    fs.writeFileSync("test-conver-out.json", JSON.stringify(config));
-    //return loadIsConfig(itemsense, config, program.facility)
-    return Promise.resolve();
+    return loadIsConfig(itemsense, config, program.facility);
   }
 )
 .then(
-  result => console.log("Load request complete.")
+  () => console.log("Load request complete.")
 )
 .catch((reason) => {
 
