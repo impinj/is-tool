@@ -35,6 +35,7 @@ var isToolLib = require("is-tool");
 
 ## Command Line Example
 
+The following are examples on how to use the command line tool. A more complete description of each task is [below](#command-line).
 ### Save Config
 ```
 is-tool save -i 10.200.90.177 itemsense-config.json
