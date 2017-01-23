@@ -1,9 +1,8 @@
-var Itemsense = require('itemsense-node');
-var loadIsConfig = require('../lib/load');
-var converter = require('../lib/convert-r4-to-r6')
-var program = require('commander');
-var fs = require('fs');
-var path = require('path');
+const Itemsense = require('itemsense-node');
+const converter = require('../lib/convert-r4-to-r6')
+const program = require('commander');
+const fs = require('fs');
+const path = require('path');
 
 program
   .description("Convert an ItemSense 2016r4 config file to 2016r6 format. The "
@@ -30,7 +29,7 @@ loadFile(program.args[0]).then(
 )
 
 function loadFile(filename){
-  return new Promise(function(resolve, reject){
+  return new Promise((resolve, reject) => {
     console.log('Reading ' + filename);
     fs.readFile(filename, 'utf8', (err,data)=>{
       if(err) reject(err)
@@ -40,10 +39,10 @@ function loadFile(filename){
 }
 
 function writeFile(convertedConf, filename){
-  return new Promise(function(resolve, reject){
+  return new Promise((resolve, reject) => {
     console.log("Writing converted file");
-    var parsed = path.parse(filename);
-    let newfilename = (parsed.dir == '' ?  "" : parsed.dir + "/") + parsed.name
+    const parsed = path.parse(filename);
+    const newfilename = (parsed.dir == '' ?  "" : parsed.dir + "/") + parsed.name
       + "-converted" + parsed.ext;
     fs.writeFile(newfilename, JSON.stringify(convertedConf, null, 2), (err) => {
       if(err) reject(err);

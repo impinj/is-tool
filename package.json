@@ -17,6 +17,9 @@
     "request": "^2.75.0",
     "itemsense-node": "^1.4.0"
   },
+  "engines": {
+    "node": ">= 6.9.0",
+  }
   "publishConfig":{"registry":"https://artifactory.impinj.com/artifactory/api/npm/npm-local"}
 
 }

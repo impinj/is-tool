@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 'use strict';
-var program = require('commander');
-var path = require('path');
+const program = require('commander');
+const path = require('path');
 
 
 program

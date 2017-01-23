@@ -1,8 +1,7 @@
-var Itemsense = require('itemsense-node');
-var loadIsConfig = require('../lib/load');
-var converter = require('../lib/convert-r4-to-r6')
-var program = require('commander');
-var fs = require('fs');
+const Itemsense = require('itemsense-node');
+const loadIsConfig = require('../lib/load');
+const program = require('commander');
+const fs = require('fs');
 
 program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
@@ -11,12 +10,17 @@ program
   .option('-f --facility <facility>', 'Name of new facility in which to add readers')
   .parse(process.argv)
 
-if (!program.args || program.args.length == 0) {
+if (!program.args || program.args.length == 0){
   console.log("No file specified to load.")
   process.exit(1)
 }
 
-var itemsenseConfig = {
+if (!program.ip){
+  console.log("ItemSense IP address not specified.")
+  process.exit(1)
+}
+
+const itemsenseConfig = {
   "username": (program.user || "admin"),
   "password": (program.pass || "admindefault"),
   "itemsenseUrl": `http://${program.ip}/itemsense`
@@ -25,7 +29,7 @@ var itemsenseConfig = {
 loadFile(program.args[0])
 .then(
   config => {
-    var itemsense = new Itemsense(itemsenseConfig);
+    const itemsense = new Itemsense(itemsenseConfig);
     return loadIsConfig(itemsense, config, program.facility);
   }
 )
@@ -52,8 +56,11 @@ function loadFile(filename){
   return new Promise(function(resolve, reject){
     console.log('Reading ' + filename);
     fs.readFile(filename, 'utf8', (err,data)=>{
-      if(err) reject(err)
-      else resolve(JSON.parse(data));
+      if(err){
+        reject(err)
+      } else {
+        resolve(JSON.parse(data));
+      }
     });
   });
 }
