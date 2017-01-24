@@ -25,15 +25,18 @@ loadFile(program.args[0]).then(
   newfilename => console.log("Wrote " + newfilename)
 )
 .catch(
-  reason => console.log("Failure during convertion: \n" + reason.stack + "\n")
+  reason => {
+    console.log("Failure during convertion: \n" + reason.stack + "\n");
+    process.exit(1);
+  }
 )
 
 function loadFile(filename){
   return new Promise((resolve, reject) => {
     console.log('Reading ' + filename);
     fs.readFile(filename, 'utf8', (err,data)=>{
-      if(err) reject(err)
-      else resolve(JSON.parse(data));
+      if(err) return reject(err)
+      resolve(JSON.parse(data));
     });
   });
 }
@@ -45,8 +48,8 @@ function writeFile(convertedConf, filename){
     const newfilename = (parsed.dir == '' ?  "" : parsed.dir + "/") + parsed.name
       + "-converted" + parsed.ext;
     fs.writeFile(newfilename, JSON.stringify(convertedConf, null, 2), (err) => {
-      if(err) reject(err);
-      else resolve(newfilename);
+      if(err) return reject(err);
+      resolve(newfilename);
     })
   })
 }

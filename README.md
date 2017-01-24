@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-**is-tool** is a command line tool and small set of library functions to perform helpful tasks agains Impinj ItemSense&reg;. The command line aspect of **is-tool** is essentially an interface to the library functions.
+**is-tool** is a command line tool and small set of library functions to perform helpful tasks against Impinj ItemSense&reg;. The command line aspect of **is-tool** is essentially an interface to the library functions.
 The command line tool performs the following primary tasks:
 * Stores all ItemSense configuration into a file in JSON format.
 * Loads ItemSense configuration from a file.
@@ -11,7 +11,9 @@ The command line tool performs the following primary tasks:
 ## Getting Started
 
 ### Prerequisites
-As **is-tool** is a nodejs based tool, to run it you will need both NPM and node installed on your system. The latest version of each is required.
+As **is-tool** is a Node.js based tool, to run it you will need both NPM and Node.js installed on your system. Both can be downloaded from [here]( http://nodejs.org) (installing the Node.js gives you both the `npm` and `node` commands). Any version above 6.9.4 is required.
+
+
 
 ### Installation
 To install **is-tool** as a command line tool from an NPM repository run:
@@ -28,7 +30,7 @@ Example:
 ```
 Then import the library into you project.
 Example:
-```
+```js
 var isToolLib = require("is-tool");
 ```
 
@@ -81,7 +83,7 @@ Usage: is-tool save [options] [file]
 |  -u --user \<user\>  |An ItemSense username for an admin level user. |
 |  -p --pass \<pass\>  |ItemSense password for the above user. |
 
-The IP address is mandatory but username and password are optional. If they are not specified, the default to the ItemSense default administration username and password.
+The IP address is mandatory but username and password are optional. If they are not specified, the default to use the ItemSense default administration username and password.
 
 #### Load
 Usage: is-tool load [options] <file>
@@ -94,7 +96,7 @@ Usage: is-tool load [options] <file>
 |  -u --user \<user\>  |An ItemSense username for an admin level user. |
 |  -p --pass \<pass\>  |ItemSense password for the above user. |
 
-The IP address is mandatory but username and password are optional. If they are not specified they default to the ItemSense default administration username and password.
+The IP address is mandatory but username and password are optional. If they are not specified they default to use the ItemSense default administration username and password.
 
 #### Convert
 Usage: is-tool load [options] <file>
@@ -133,7 +135,7 @@ Where:
 * "zoneMaps"
 * "users"
 
-Each of these keys should then contain and area of one or more objects of the appropriate format. The output from `is-tool save` is in the correct form. This tool also accepts the configuration export created using **itemsense-viztool-js**.
+Each of these keys should then contain an array of one or more objects of the appropriate format. The output from `is-tool save` is in the correct form. This tool also accepts the configuration export created using **itemsense-viztool-js**.
 
 If a configuration object already exists within ItemSense, it is updated.
 

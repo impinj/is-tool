@@ -47,7 +47,7 @@ loadFile(program.args[0])
     errorMsg = reason;
   }
   console.log("Failure: \n  " + errorMsg)
-
+  process.exit(1);
 });
 
 
@@ -56,11 +56,8 @@ function loadFile(filename){
   return new Promise(function(resolve, reject){
     console.log('Reading ' + filename);
     fs.readFile(filename, 'utf8', (err,data)=>{
-      if(err){
-        reject(err)
-      } else {
-        resolve(JSON.parse(data));
-      }
+      if(err) return reject(err)
+      resolve(JSON.parse(data));
     });
   });
 }
