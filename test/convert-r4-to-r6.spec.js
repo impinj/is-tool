@@ -485,4 +485,45 @@ describe('When converting reader configuration,', () => {
       }]
     });
   });
+
+  it('should produce error when readerConfiguration is associated to different recipe types', ()=>{
+    let promise = converter({
+      "recipes": [{
+        "name": "xArray-in-Gateway",
+        "readerConfigurations": {
+          "xArray-REC-Inner": "IMPINJ_InventoryConfig"
+        },
+        "type": "LLRP",
+        "locationReportingEnabled": false
+      },
+      {
+        "name": "xArray-in-Gateway2",
+        "readerConfigurations": {
+          "xArray-REC-Inner": "IMPINJ_InventoryConfig"
+        },
+        "type": "LLRP",
+        "locationReportingEnabled": true
+      }],
+      "readerConfigurations": [{
+        "name": "IMPINJ_InventoryConfig",
+        "operation": "LOCATION",
+        "configuration": {
+          "disabledAntennas": []
+        }
+      }]
+    });
+    return expect(promise).to.eventually.be.rejected
+      .then(() => {
+        return expect(promise).to.be.rejectedWith(
+          "\n\nReader configurations can't be associated to different recipe types.\n"
+          + "The following inconsistent reader configurations were found:"
+          + "\n\n"
+          + "Reader configuration 'IMPINJ_InventoryConfig' used by recipes:"
+          + "\n\t"
+          + "'xArray-in-Gateway' of type: INVENTORY\n\t"
+          + "'xArray-in-Gateway2' of type: LOCATION\n\n"
+          + "Please correct these inconsistencies before converting."
+        );
+      });
+  });
 });
