@@ -102,7 +102,7 @@ describe('When saving ItemSense configuration, ', () => {
 
     return expect(promise).to.eventually.be.fulfilled
     .then(
-      () => loadFile('/Users/ghill/Documents/itemSense/code/is-tool/testfile.json')
+      () => loadFile(path.resolve(__dirname,"..","testfile.json"))
     )
     .then(
       (contents) => {
@@ -221,7 +221,7 @@ describe('When saving ItemSense configuration, ', () => {
 
     return expect(promise).to.eventually.be.fulfilled
     .then(
-      () => loadFile('/Users/ghill/Documents/itemSense/code/is-tool/testfile.json')
+      () => loadFile(path.resolve(__dirname,"..","testfile.json"))
     )
     .then(
       (contents) => {
