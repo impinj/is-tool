@@ -28,7 +28,7 @@ const itemsenseConfig = {
 
 console.log(`Connecting to ItemSense: ${JSON.stringify(itemsenseConfig)}`);
 const itemsense = new Itemsense(itemsenseConfig);
-if(!itemsense) throw new Error("itemsense object is null");
+if(!itemsense) throw new Error("Couldn't create ItemSense instance object");
 
 saveIsConfig(itemsense, program.args)
 .then(
