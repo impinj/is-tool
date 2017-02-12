@@ -4,7 +4,7 @@
   "description": "Load and Save ItemSense configuration",
   "main": "is-tool-lib",
   "scripts": {
-    "test": "NODE_ENV=test mocha --require test/helpers/test-setup.spec.js 'test/*.spec.js'"
+    "test": "NODE_ENV=test node_modules/.bin/istanbul test node_modules/.bin/_mocha -- --require test/helpers/test-setup.spec.js 'test/*.spec.js'"
   },
   "author": "",
   "license": "MIT",
@@ -21,6 +21,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "chai-fs": "^1.0.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "sinon": "^1.17.7"
   },
