@@ -324,7 +324,7 @@ describe('When converting reader configuration,', () => {
     });
   });
 
-  it('should only remove reportConfig if associated recipe is inventory', ()=>{
+  it('should remove reportConfig if associated recipe is inventory', ()=>{
     let promise = converter({
       "recipes": [{
         "name": "xArray-in-Gateway",
