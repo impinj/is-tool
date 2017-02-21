@@ -152,11 +152,14 @@ Where:
 ## Contributing
 
 1. Fork the repository.
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request.
+1. Create your feature branch: `git checkout -b my-new-feature`
+1. Make changes and added test cases for changes.
+1. Run tests: `npm test`
+1. Verify coverage: `npm test --coverage`
+1. Lint: `npm run linter`
+1. Commit your changes: `git commit -am 'Add some feature'`
+1. Push to the branch: `git push origin my-new-feature`
+1. Submit a pull request.
 
-## License
 
 This tool uses the MIT license. See the LICENSE file.
