@@ -1,8 +1,10 @@
 'use strict';
-var load = require('./lib/load.js');
-var save = require('./lib/save.js');
+const load = require('./lib/load.js');
+const save = require('./lib/save.js');
+const convert = require('./lib/convert-r4-to-r6.js');
 
 module.exports = {
-  load: load,
-  save: save
+  load,
+  save,
+  convert
 };
