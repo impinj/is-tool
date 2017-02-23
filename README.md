@@ -147,15 +147,13 @@ isToolLib.convert(object);
 Where:
 **object** - is a javascript object which should contain ItemSense 2016r4 configuration.
 
-
-
 ## Contributing
 
 1. Fork the repository.
 1. Create your feature branch: `git checkout -b my-new-feature`
 1. Make changes and added test cases for changes.
 1. Run tests: `npm test`
-1. Verify coverage: `npm test --coverage`
+1. Verify coverage: `npm test --coverage` Note; this produces a **coverage/** directory in the base folder which will contain coverage results which can be displayed in a browser.
 1. Lint: `npm run linter`
 1. Commit your changes: `git commit -am 'Add some feature'`
 1. Push to the branch: `git push origin my-new-feature`
