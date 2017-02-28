@@ -95,10 +95,10 @@ describe('When loading an object', () => {
         "name": "etsiTestFacility"
       },
       {
-        "name": "RM-POC-Test"
+        "name": "POC-Test"
       },
       {
-        "name": "NedapTestStore2"
+        "name": "TestStore2"
       }]
     };
 
@@ -133,7 +133,7 @@ describe('When loading an object', () => {
         "roll": 0,
         "floor": "1"
       },
-      "facility": "IDL",
+      "facility": "test",
       "labels": null,
       "readerZone": "xarray115516",
       "antennaZones": null
@@ -271,7 +271,7 @@ describe('When loading an object', () => {
       ]
     };
     let promise = load(stubbedIS, config);
-    
+
     return expect(promise).to.eventually.be.fulfilled
       .then(() => {
         return getResult(

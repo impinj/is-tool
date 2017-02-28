@@ -74,7 +74,7 @@ describe('When saving ItemSense configuration, ', () => {
     }];
 
     const recipes = [{
-      "name": "Tilicum_MedMotion",
+      "name": "TestName",
       "type": "LOCATION",
       "readerConfigurationName": null,
       "tagHeartbeatMinutes": 5,
