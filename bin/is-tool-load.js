@@ -44,7 +44,7 @@ loadFile(program.args[0])
   },
 )
 .then(
-  () => console.log('Load request complete.'),
+  () => console.log('Load request complete.')
 )
 .catch((reason) => {
   let errorMsg = '';
