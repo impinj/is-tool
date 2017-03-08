@@ -39,17 +39,17 @@ if (!program.args || program.args.length === 0) {
 }
 
 loadFile(program.args[0]).then(
-  config => converter(config),
+  config => converter(config)
 )
 .then(
-  convertedConfig => writeFile(convertedConfig, program.args[0]),
+  convertedConfig => writeFile(convertedConfig, program.args[0])
 )
 .then(
-  newfilename => console.log(`Wrote ${newfilename}`),
+  newfilename => console.log(`Wrote ${newfilename}`)
 )
 .catch(
   (reason) => {
     console.log(`Failure during convertion: \n${reason.stack}\n`);
     process.exit(1);
-  },
+  }
 );

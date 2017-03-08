@@ -36,5 +36,5 @@ saveIsConfig(itemsense, program.args)
   (reason) => {
     console.log(`Failure:\n ${reason}`);
     process.exit(1);
-  },
+  }
 );
