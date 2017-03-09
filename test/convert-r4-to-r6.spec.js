@@ -571,4 +571,93 @@ describe('When converting reader configuration,', () => {
         );
       });
   });
+
+
+  it('should produce error when readerConfiguration is associated to multiple different recipe types', ()=>{
+    let promise = converter({
+      "readerDefinitions": [
+        {
+          "name": "Arlington_Office",
+          "agentIdentifier": null,
+          "serialNumber": null,
+          "address": "192.168.15.16",
+          "type": "XARRAY",
+          "connectionType": "LLRP",
+          "placement": {
+            "x": 0,
+            "y": 0,
+            "z": 1.3,
+            "yaw": 180,
+            "pitch": 0,
+            "roll": 0,
+            "floor": "1"
+          },
+          "facility": "Arlington",
+          "labels": null,
+          "readerZone": "Arlington_Office",
+          "antennaZones": null
+        },
+        {
+          "name": "Arlington_LabBench1",
+          "agentIdentifier": null,
+          "serialNumber": null,
+          "address": "192.168.15.24",
+          "type": "SPEEDWAY",
+          "connectionType": "LLRP",
+          "placement": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "yaw": 0,
+            "pitch": 0,
+            "roll": 0,
+            "floor": "1"
+          },
+          "facility": "Arlington_2",
+          "labels": null,
+          "readerZone": "Arlington_Office_LabBench_Identix",
+          "antennaZones": null
+        }
+      ]
+    });
+    return expect(promise).to.eventually.eql({
+      "readerDefinitions": [
+        {
+          "name": "Arlington_Office",
+          "agentIdentifier": null,
+          "serialNumber": null,
+          "address": "192.168.15.16",
+          "type": "XARRAY",
+          "connectionType": "LLRP",
+          "placement": {
+            "x": 0,
+            "y": 0,
+            "z": 1.3,
+            "yaw": 180,
+            "pitch": 0,
+            "roll": 0,
+            "floor": "1"
+          },
+          "facility": "Arlington",
+          "labels": null,
+          "readerZone": "Arlington_Office",
+          "antennaZones": null
+        },
+        {
+          "name": "Arlington_LabBench1",
+          "agentIdentifier": null,
+          "serialNumber": null,
+          "address": "192.168.15.24",
+          "type": "SPEEDWAY",
+          "connectionType": "LLRP",
+          "placement": {},
+          "facility": "Arlington_2",
+          "labels": null,
+          "readerZone": "Arlington_Office_LabBench_Identix",
+          "antennaZones": null
+        }
+      ]
+    });
+  });
+
 });

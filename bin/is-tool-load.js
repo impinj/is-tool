@@ -41,7 +41,7 @@ loadFile(program.args[0])
   (config) => {
     const itemsense = new Itemsense(itemsenseConfig);
     return loadIsConfig(itemsense, config, program.facility);
-  },
+  }
 )
 .then(
   () => console.log('Load request complete.')
