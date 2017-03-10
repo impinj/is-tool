@@ -650,7 +650,6 @@ describe('When converting reader configuration,', () => {
           "address": "192.168.15.24",
           "type": "SPEEDWAY",
           "connectionType": "LLRP",
-          "placement": {},
           "facility": "Arlington_2",
           "labels": null,
           "readerZone": "Arlington_Office_LabBench_Identix",
