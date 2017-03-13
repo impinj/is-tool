@@ -17,6 +17,7 @@ program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
   .option('-u --user <user>', 'ItemSense Username')
   .option('-p --pass <pass>', 'ItemSense password')
+  .option('-a --addpassword', 'Add a password to a user, necessary when adding a new user to the system')
   .option('-f --facility <facility>', 'Name of new facility in which to add readers')
   .parse(process.argv);
 
@@ -40,7 +41,7 @@ loadFile(program.args[0])
 .then(
   (config) => {
     const itemsense = new Itemsense(itemsenseConfig);
-    return loadIsConfig(itemsense, config, program.facility);
+    return loadIsConfig(itemsense, config, program.facility, program.addpassword);
   }
 )
 .then(

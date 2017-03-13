@@ -33,12 +33,12 @@ describe('When loading an object', () => {
   });
 
   afterEach(()=>{
-    this.itemsense.facilities.update.callCount = 0;
-    this.itemsense.readerDefinitions.update.callCount = 0;
-    this.itemsense.readerConfigurations.update.callCount = 0;
-    this.itemsense.recipes.update.callCount = 0;
-    this.itemsense.zoneMaps.update.callCount = 0;
-    this.itemsense.users.update.callCount = 0;
+    this.itemsense.facilities.update.reset();
+    this.itemsense.readerDefinitions.update.reset();
+    this.itemsense.readerConfigurations.update.reset();
+    this.itemsense.recipes.update.reset();
+    this.itemsense.zoneMaps.update.reset();
+    this.itemsense.users.update.reset();
   })
   it('should not error if the conf object is empty', ()=>{
     let stubbedIS = this.itemsense;
@@ -388,8 +388,8 @@ describe('When loading an object', () => {
       return expect(promise).to.eventually.be.fulfilled
         .then(() =>{
           return getResult(
-            this.itemsense.zoneMaps.update.calledOnce,
-            this.itemsense.zoneMaps.update.calledWith(data)
+            this.itemsense.zoneMaps.update.calledOnce
+            && this.itemsense.zoneMaps.update.calledWith(data)
           );
         });
     });
@@ -490,6 +490,53 @@ describe('When loading an object', () => {
       return expect(promise).to.eventually.be.fulfilled
         .then(() => {
           return getResult(this.itemsense.users.update.callCount === 2);
+        });
+    });
+
+    it('should load users with a default password', ()=>{
+      this.itemsense.users.update.returns(
+
+        Promise.resolve({})
+      );
+      let stubbedIS = this.itemsense;
+      let config = {
+        "users": [    {
+          "name": "Admin1",
+          "roles": [
+            "Admin"
+          ]
+        },
+        {
+          "name": "analyst1",
+          "roles": [
+            "DataReader"
+          ]
+        }]
+      };
+      let firstCallConfig =
+        {
+          "name": "Admin1",
+          "roles": [
+            "Admin"
+          ],
+          'password': 'default01'
+        };
+      let secondCallConfig =
+        {
+          "name": "analyst1",
+          "roles": [
+            "DataReader"
+          ],
+          'password': 'default01'
+        };
+      let promise = load(stubbedIS, config, null, true);
+      return expect(promise).to.eventually.be.fulfilled
+        .then(() => {
+          return getResult(
+            this.itemsense.users.update.callCount === 2
+            && this.itemsense.users.update.firstCall.calledWith(firstCallConfig)
+            && this.itemsense.users.update.secondCall.calledWith(secondCallConfig)
+          );
         });
     });
 });

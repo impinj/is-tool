@@ -160,4 +160,4 @@ Where:
 1. Submit a pull request.
 
 
-This tool uses the MIT license. See the LICENSE file.
+This tool uses the Apache v2.0 license. See the LICENSE file.
