@@ -47,6 +47,9 @@ is-tool save -i 10.200.90.177 itemsense-config.json
 ```
 is-tool load -i 10.200.90.177 itemsense-config.json
 ```
+```
+is-tool load -i 10.200.90.177 --addpassword itemsense-config.json
+```
 
 ### Convert to 2016r6 Format
 ```
@@ -92,15 +95,16 @@ Usage: is-tool load [options] <file>
 |--------|------------|
 |\<file\>|The filename to read configuration from.|
 |  -h, --help        |Output usage information for the task|
-|  -i --ip \<ipaddr\>  |ItemSense IP address from which to save the configuration.|
-|  -u --user \<user\>  |An ItemSense username for an admin level user. |
-|  -p --pass \<pass\>  |ItemSense password for the above user. |
-
+|  -i --ip \<ipaddr\>  |ItemSense IP address from which to save the configuration|
+|  -u --user \<user\>  |An ItemSense username for an admin level user |
+|  -p --pass \<pass\>  |ItemSense password for the above user |
+|  -a --addpassword  |Add a default password of 'defualt01' to a user. Necessary when adding a new user to the system.|
+|  -f --facility \<pass\>  |Name of new facility in which to add readers |
 The IP address is mandatory but username and password are optional. If they are not specified they default to use the ItemSense default administration username and password.
+The ```--addpassword``` option is provided because it's not possible to get a user's password when querying for user configuration. This means if you used `is-tool save` to get the configuration of an ItemSense instance (including user configuration) with the intention to load it into a brand new clean ItemSense instance, a password has to be added to each user configuration before it can be loaded. This option does that for you.
 
 #### Convert
 Usage: is-tool load [options] <file>
-
 
 |Options|Description|
 |--------|------------|
@@ -130,7 +134,7 @@ Where:
 **object** - is a javascript object which should contain 1 or more of the following keys:
 * "facilities"
 * "readerDefinitions"
-* "readerConfigurations"</li>
+* "readerConfigurations"
 * "recipes"
 * "zoneMaps"
 * "users"
@@ -145,7 +149,7 @@ The convert function looks like the following:
 isToolLib.convert(object);
 ```
 Where:
-**object** - is a javascript object which should contain ItemSense 2016r4 configuration.
+**object** - is a javascript object which should contain ItemSense 2016r4 formatted configuration.
 
 ## Contributing
 

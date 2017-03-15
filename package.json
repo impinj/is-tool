@@ -8,7 +8,7 @@
     "linter": "node_modules/.bin/eslint bin lib"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bin": {
     "is-tool": "./bin/is-tool.js"
   },
@@ -34,8 +34,5 @@
   },
   "engines": {
     "node": ">= 6.9.4"
-  },
-  "publishConfig": {
-    "registry": "https://artifactory.impinj.com/artifactory/api/npm/npm-local"
   }
 }
