@@ -38,6 +38,7 @@ var isToolLib = require("is-tool");
 ## Command Line Example
 
 The following are examples on how to use the command line tool. A more complete description of each task is [below](#command-line).
+
 ### Save Config
 ```
 is-tool save -i 10.200.90.177 itemsense-config.json
@@ -75,7 +76,7 @@ Each of these sub-tasks have their own help menu which shows the task specific o
 
 
 #### Save
-Usage: is-tool save [options] [file]
+Usage: `is-tool save [options] [file]`
 
 
 |Options|Description|
@@ -89,7 +90,7 @@ Usage: is-tool save [options] [file]
 The IP address is mandatory but username and password are optional. If they are not specified, the default to use the ItemSense default administration username and password.
 
 #### Load
-Usage: is-tool load [options] <file>
+Usage: `is-tool load [options] <file>`
 
 |Options|Description|
 |--------|------------|
@@ -104,7 +105,7 @@ The IP address is mandatory but username and password are optional. If they are 
 The ```--addpassword``` option is provided because it's not possible to get a user's password when querying for user configuration. This means if you used `is-tool save` to get the configuration of an ItemSense instance (including user configuration) with the intention to load it into a brand new clean ItemSense instance, a password has to be added to each user configuration before it can be loaded. This option does that for you.
 
 #### Convert
-Usage: is-tool load [options] <file>
+Usage: `is-tool load [options] <file>`
 
 |Options|Description|
 |--------|------------|

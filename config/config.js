@@ -1,6 +1,5 @@
 module.exports = {
-  load:
-  [
+  loadOrder: [
     "facilities",
     "readerDefinitions",
     "readerConfigurations",
@@ -8,4 +7,5 @@ module.exports = {
     "zoneMaps",
     "users"
   ],
+  logging: 'loud'
 }
