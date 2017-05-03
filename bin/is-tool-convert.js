@@ -2,7 +2,9 @@ const converter = require('../lib/convert-r4-to-r6');
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
+const configFile = require('../config/config');
 
+configFile.logging = 'loud';
 
 function loadFile(filename) {
   return new Promise((resolve, reject) => {
@@ -45,7 +47,13 @@ loadFile(program.args[0]).then(
   convertedConfig => writeFile(convertedConfig, program.args[0])
 )
 .then(
-  newfilename => console.log(`Wrote ${newfilename}`)
+  (newfilename) => {
+    console.log(
+      "\nNote: This scipt didn't add any antenna numbers to the new disabledAntennas"
+      + '\nfield. If necessary, please update this parameter to suit your '
+      + 'requirements');
+    console.log(`Wrote ${newfilename}`);
+  }
 )
 .catch(
   (reason) => {

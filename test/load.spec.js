@@ -1,4 +1,4 @@
-const load = require('../lib/load');
+const load = require('../is-tool-lib').load;
 const sinon = require('sinon');
 const Itemsense = require('itemsense-node');
 
@@ -6,7 +6,7 @@ function getResult(clause, failMessage){
   return (clause ? Promise.resolve() : Promise.reject(new Error(failMessage)));
 }
 
-describe('When loading an object', () => {
+describe('When loading an object, it', () => {
   before(()=>{
     const itemsenseConfig = {
       "username": "admin",
@@ -307,7 +307,7 @@ describe('When loading an object', () => {
         });
     });
 
-    it('it should load multiple recipes without error.', ()=>{
+    it('should load multiple recipes without error.', ()=>{
       this.itemsense.recipes.update.returns(Promise.resolve({}));
       let stubbedIS = this.itemsense;
       let config = {
@@ -394,7 +394,7 @@ describe('When loading an object', () => {
         });
     });
 
-    it('it should load multiple zoneMaps without error.', ()=>{
+    it('should load multiple zoneMaps without error.', ()=>{
       this.itemsense.zoneMaps.update.returns(Promise.resolve({}));
       let stubbedIS = this.itemsense;
       let config = {
@@ -469,7 +469,7 @@ describe('When loading an object', () => {
         });
     });
 
-    it('it should load multiple users without error.', ()=>{
+    it('should load multiple users without error.', ()=>{
       this.itemsense.users.update.returns(Promise.resolve({}));
       let stubbedIS = this.itemsense;
       let config = {

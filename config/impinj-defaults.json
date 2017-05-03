@@ -1,0 +1,289 @@
+{
+  "users": [
+    {
+      "name": "ReaderAgent",
+      "roles": [
+        "ReaderAgent"
+      ]
+    }
+  ],
+  "readerConfigurations": [
+    {
+      "name": "IMPINJ_Do_Nothing",
+      "configuration": {},
+      "operation": "DO_NOTHING"
+    },
+    {
+      "name": "IMPINJ_Deep_Scan_Inventory",
+      "configuration": {
+        "readerMode": "MODE_1002",
+        "session": 2,
+        "searchMode": "SINGLE_TARGET",
+        "tagPopulationEstimate": 4,
+        "transmitPowerInDbm": 30,
+        "polarization": null,
+        "antennas": [
+          45,
+          16,
+          35,
+          6,
+          41,
+          28,
+          47,
+          18,
+          29,
+          8,
+          43,
+          22,
+          4,
+          49,
+          20,
+          31,
+          10,
+          37,
+          24,
+          51,
+          14,
+          33,
+          12,
+          39,
+          26,
+          2,
+          13,
+          32,
+          11,
+          38,
+          25,
+          52,
+          15,
+          34,
+          5,
+          40,
+          27,
+          46,
+          1,
+          17,
+          36,
+          7,
+          42,
+          21,
+          48,
+          19,
+          30,
+          9,
+          44,
+          23,
+          50,
+          3
+        ],
+        "filter": null,
+        "channelConfig": null
+      },
+      "operation": "INVENTORY"
+    },
+    {
+      "name": "IMPINJ_Dense_Reader_Mode_Inventory",
+      "configuration": {
+        "readerMode": "MODE_1004",
+        "session": 2,
+        "searchMode": "SINGLE_TARGET",
+        "tagPopulationEstimate": 4,
+        "transmitPowerInDbm": 30,
+        "polarization": null,
+        "antennas": [
+          45,
+          16,
+          35,
+          6,
+          41,
+          28,
+          47,
+          18,
+          29,
+          8,
+          43,
+          22,
+          4,
+          49,
+          20,
+          31,
+          10,
+          37,
+          24,
+          51,
+          14,
+          33,
+          12,
+          39,
+          26,
+          2,
+          13,
+          32,
+          11,
+          38,
+          25,
+          52,
+          15,
+          34,
+          5,
+          40,
+          27,
+          46,
+          1,
+          17,
+          36,
+          7,
+          42,
+          21,
+          48,
+          19,
+          30,
+          9,
+          44,
+          23,
+          50,
+          3
+        ],
+        "filter": null,
+        "channelConfig": null
+      },
+      "operation": "INVENTORY"
+    },
+    {
+      "name": "IMPINJ_Dense_Reader_Mode_Location",
+      "configuration": {
+        "readerMode": "MODE_1004",
+        "disabledAntennas": null,
+        "session": 2,
+        "transmitPowerInDbm": null,
+        "filter": null
+      },
+      "operation": "LOCATION"
+    },
+    {
+      "name": "IMPINJ_Deep_Scan_Location",
+      "configuration": {
+        "readerMode": "MODE_1002",
+        "disabledAntennas": null,
+        "session": 2,
+        "transmitPowerInDbm": null,
+        "filter": null
+      },
+      "operation": "LOCATION"
+    },
+    {
+      "name": "IMPINJ_Deep_Scan_Inventory_xSpan",
+      "configuration": {
+        "readerMode": "MODE_1002",
+        "session": 2,
+        "searchMode": "SINGLE_TARGET",
+        "tagPopulationEstimate": 4,
+        "transmitPowerInDbm": 30,
+        "polarization": null,
+        "antennas": [
+          1,
+          12,
+          13,
+          6,
+          7,
+          2,
+          3,
+          10,
+          11,
+          8,
+          9,
+          4,
+          5
+        ],
+        "filter": null,
+        "channelConfig": null
+      },
+      "operation": "INVENTORY"
+    },
+    {
+      "name": "IMPINJ_Fast_Location",
+      "configuration": {
+        "readerMode": "MODE_1003",
+        "disabledAntennas": null,
+        "session": 2,
+        "transmitPowerInDbm": null,
+        "filter": null
+      },
+      "operation": "LOCATION"
+    }
+  ],
+  "recipes": [
+    {
+      "name": "IMPINJ_Deep_Scan_Inventory",
+      "type": "INVENTORY",
+      "readerConfigurationName": "IMPINJ_Deep_Scan_Inventory",
+      "tagHeartbeatMinutes": 5,
+      "tagHeartbeatDuration": null,
+      "tagExpiryDuration": null,
+      "readerConfigurations": {},
+      "locationAggregationModel": "BY_TIME",
+      "computeWindow": 20,
+      "reportingInterval": 5
+    },
+    {
+      "name": "IMPINJ_Dense_Reader_Mode_Inventory",
+      "type": "INVENTORY",
+      "readerConfigurationName": "IMPINJ_Dense_Reader_Mode_Inventory",
+      "tagHeartbeatMinutes": 5,
+      "tagHeartbeatDuration": null,
+      "tagExpiryDuration": null,
+      "readerConfigurations": {},
+      "locationAggregationModel": "BY_TIME",
+      "computeWindow": 20,
+      "reportingInterval": 5
+    },
+    {
+      "name": "IMPINJ_Dense_Reader_Mode_Location",
+      "type": "LOCATION",
+      "readerConfigurationName": "IMPINJ_Dense_Reader_Mode_Location",
+      "tagHeartbeatMinutes": 5,
+      "tagHeartbeatDuration": null,
+      "tagExpiryDuration": null,
+      "readerConfigurations": {},
+      "minimumMovementInMeters": 1,
+      "computeWindow": 10,
+      "reportingInterval": 5
+    },
+    {
+      "name": "IMPINJ_Deep_Scan_Location",
+      "type": "LOCATION",
+      "readerConfigurationName": "IMPINJ_Deep_Scan_Location",
+      "tagHeartbeatMinutes": 5,
+      "tagHeartbeatDuration": null,
+      "tagExpiryDuration": null,
+      "readerConfigurations": {},
+      "minimumMovementInMeters": 1,
+      "computeWindow": 10,
+      "reportingInterval": 5
+    },
+    {
+      "name": "IMPINJ_Deep_Scan_Inventory_xSpan",
+      "type": "INVENTORY",
+      "readerConfigurationName": "IMPINJ_Deep_Scan_Inventory_xSpan",
+      "tagHeartbeatMinutes": 5,
+      "tagHeartbeatDuration": null,
+      "tagExpiryDuration": null,
+      "readerConfigurations": {},
+      "locationAggregationModel": "BY_TIME",
+      "computeWindow": 20,
+      "reportingInterval": 5
+    },
+    {
+      "name": "IMPINJ_Fast_Location",
+      "type": "LOCATION",
+      "readerConfigurationName": "IMPINJ_Fast_Location",
+      "tagHeartbeatMinutes": 5,
+      "tagHeartbeatDuration": null,
+      "tagExpiryDuration": null,
+      "readerConfigurations": {},
+      "minimumMovementInMeters": 1,
+      "computeWindow": 10,
+      "reportingInterval": 5
+    }
+  ]
+}
