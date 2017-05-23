@@ -28,7 +28,7 @@ Example:
 ```
 "is-tool": "^0.2.0"
 ```
-Then import the library into you project.
+Then import the library into your project.
 Example:
 ```js
 var isToolLib = require("is-tool");
@@ -100,6 +100,7 @@ Usage: is-tool load [options] <file>
 |  -p --pass \<pass\>  |ItemSense password for the above user |
 |  -a --addpassword  |Add a default password of 'defualt01' to a user. Necessary when adding a new user to the system.|
 |  -f --facility \<pass\>  |Name of new facility in which to add readers |
+
 The IP address is mandatory but username and password are optional. If they are not specified they default to use the ItemSense default administration username and password.
 The ```--addpassword``` option is provided because it's not possible to get a user's password when querying for user configuration. This means if you used `is-tool save` to get the configuration of an ItemSense instance (including user configuration) with the intention to load it into a brand new clean ItemSense instance, a password has to be added to each user configuration before it can be loaded. This option does that for you.
 
