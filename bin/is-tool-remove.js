@@ -1,10 +1,9 @@
 const Itemsense = require('itemsense-node');
+const removeConfig = require('../lib/remove');
 const program = require('commander');
 const fs = require('fs');
-const inquirer = require('inquirer');
-const setConfig = require('../lib/set');
 
-function loadFile(filename) {
+function readFile(filename) {
   return new Promise((resolve, reject) => {
     console.log(`Reading ${filename}`);
     fs.readFile(filename, 'utf8', (err, data) => {
@@ -18,9 +17,6 @@ program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
   .option('-u --user <user>', 'ItemSense Username')
   .option('-p --pass <pass>', 'ItemSense password')
-  .option('-a --addpassword', 'Add a password to a user, necessary when adding a new user to the system')
-  .option('-f --facility <facility>', 'Name of new facility in which to add readers')
-  .option('-c --completeclear', 'Remove everything including Impinj defaults before loading')
   .parse(process.argv);
 
 if (!program.args || program.args.length === 0) {
@@ -39,44 +35,21 @@ const itemsenseConfig = {
   itemsenseUrl: `http://${program.ip}/itemsense`
 };
 
-const question = {
-  type: 'confirm',
-  name: 'ans',
-  default: false,
-  message: 'Are you sure you would like to remove all configuration from this ItemSense? (y/N)'
-};
-const itemsense = new Itemsense(itemsenseConfig);
-
-inquirer.prompt([question])
+readFile(program.args[0])
 .then(
-  (str) => {
-    if (!str.ans) {
-      console.log('Exiting.....');
-      process.exit(0);
-    }
-    console.log('Reading file......');
-    return loadFile(program.args[0]);
+  (config) => {
+    const itemsense = new Itemsense(itemsenseConfig);
+    return removeConfig(itemsense, config);
   }
 )
 .then(
-  (configToLoad) => {
-    const config = {
-      configToLoad,
-      completeClear: program.completeclear,
-      facility: program.facility,
-      addPassword: program.addpassword
-    };
-    return setConfig(itemsense, config);
-  }
-)
-.then(
-  () => console.log('Set request complete.')
+  () => console.log('Remove request complete.')
 )
 .catch((reason) => {
   let errorMsg = '';
 
   if (reason.message) {
-    errorMsg = `Set config failed: ${reason.message}`;
+    errorMsg = `Deleting config failed: ${reason.message}`;
     if (reason.error) errorMsg += `\n ${JSON.stringify(reason.error)}`;
   } else {
     errorMsg = reason;

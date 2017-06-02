@@ -1,5 +1,5 @@
 const Itemsense = require('itemsense-node');
-const clearConfig = require('../lib/clear');
+const clearAllConfig = require('../lib/clear-all');
 const program = require('commander');
 const inquirer = require('inquirer');
 const loadConfig = require('../lib/load');
@@ -9,8 +9,8 @@ const defaultConfig = require('../config/impinj-defaults.json');
 program
   .option('-i --ip <ipaddr>', 'ItemSense IP address')
   .option('-u --user <user>', 'ItemSense Username')
-  .option('-p --pass <pass>', 'ItemSense password')
-  .option('-c --completeclear', 'Remove everything including Impinj default confs')
+  .option('-p --pass <pass>', 'ItemSense Password')
+  .option('-c --completeclear', 'Remove everything including Impinj default configs')
   .parse(process.argv);
 
 if (!program.ip) {
@@ -40,7 +40,7 @@ inquirer.prompt([question])
     }
 
     console.log('Clearing......');
-    return clearConfig(itemsense);
+    return clearAllConfig(itemsense);
   }
 )
 .then(
@@ -50,7 +50,6 @@ inquirer.prompt([question])
       console.log('Clear request complete.');
       process.exit(0);
     }
-    console.log('Loading Impinj defaults.');
     return loadConfig(itemsense, defaultConfig);
   }
 )
@@ -61,7 +60,7 @@ inquirer.prompt([question])
   let errorMsg = '';
 
   if (reason.message) {
-    errorMsg = `Clearing config failed: ${reason.message}`;
+    errorMsg = `Clearing all config failed: ${reason.message}`;
     console.log(reason.error);
     if (reason.error) errorMsg += `\n ${JSON.stringify(reason.error)}`;
   } else {

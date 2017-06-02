@@ -7,5 +7,5 @@ module.exports = {
     "zoneMaps",
     "users"
   ],
-  logging: 'loud'
+  logging: 'quiet'
 }

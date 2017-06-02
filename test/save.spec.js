@@ -1,4 +1,4 @@
-const save = require('../lib/save');
+const save = require('../is-tool-lib').save
 const sinon = require('sinon');
 const Itemsense = require('itemsense-node');
 const fs = require('fs')
@@ -17,7 +17,7 @@ function loadFile(filename){
   });
 }
 
-describe('When saving ItemSense configuration, ', () => {
+describe('When saving ItemSense configuration, it', () => {
   before(()=>{
     const itemsenseConfig = {
       "username": "admin",

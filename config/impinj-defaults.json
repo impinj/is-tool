@@ -1,4 +1,12 @@
 {
+  "users": [
+    {
+      "name": "ReaderAgent",
+      "roles": [
+        "ReaderAgent"
+      ]
+    }
+  ],
   "readerConfigurations": [
     {
       "name": "IMPINJ_Do_Nothing",

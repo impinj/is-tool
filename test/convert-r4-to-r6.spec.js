@@ -1,4 +1,4 @@
-const converter = require('../lib/convert-r4-to-r6');
+const converter = require('../is-tool-lib').convert;
 
 describe('When converting an empty object', () => {
   it('should return an empty object', () => {
