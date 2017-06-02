@@ -32,9 +32,9 @@ if (!itemsense) throw new Error("Couldn't create ItemSense instance object");
 
 saveIsConfig(itemsense, program.args)
 .then(
-  fileLocation => console.log(`Wrote: ${fileLocation}`),
-  (reason) => {
-    console.log(`Failure:\n ${reason}`);
-    process.exit(1);
-  }
-);
+  fileLocation => console.log(`Wrote: ${fileLocation}`)
+)
+.catch((reason) => {
+  console.log(`Failure:\n ${reason}`);
+  process.exit(1);
+});
