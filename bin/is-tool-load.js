@@ -2,6 +2,10 @@ const Itemsense = require('itemsense-node');
 const loadIsConfig = require('../lib/load');
 const program = require('commander');
 const fs = require('fs');
+const globalConf = require('../config/config');
+
+// if is-tool is used via the CLI, turn logging on.
+globalConf.logging = 'loud';
 
 function loadFile(filename) {
   return new Promise((resolve, reject) => {
@@ -40,6 +44,7 @@ const itemsenseConfig = {
 loadFile(program.args[0])
 .then(
   (config) => {
+    console.log('Loading configuration...')
     const itemsense = new Itemsense(itemsenseConfig);
     return loadIsConfig(itemsense, config, program.facility, program.addpassword);
   }

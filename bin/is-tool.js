@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 const program = require('commander');
 
+
 program
   .usage('<cmd> [options]')
   .command('load <file>', 'load configuration file into ItemSense')

@@ -2,9 +2,10 @@ const converter = require('../lib/convert-r4-to-r6');
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
-const configFile = require('../config/config');
+const globalConf = require('../config/config');
 
-configFile.logging = 'loud';
+// if is-tool is used via the CLI, turn logging on.
+globalConf.logging = 'loud';
 
 function loadFile(filename) {
   return new Promise((resolve, reject) => {
