@@ -1,7 +1,7 @@
 {
   "name": "is-tool",
-  "version": "0.2.4",
-  "description": "Load and Save ItemSense configuration",
+  "version": "0.3.0",
+  "description": "Load, Save and Delete ItemSense configuration",
   "main": "is-tool-lib",
   "scripts": {
     "test": "NODE_ENV=test node_modules/.bin/istanbul test node_modules/.bin/_mocha -- --require test/helpers/test-setup.spec.js 'test/*.spec.js'",
@@ -15,9 +15,10 @@
   "dependencies": {
     "async": "^2.1.1",
     "commander": "^2.9.0",
+    "get-stdin": "^5.0.1",
     "itemsense-node": "^1.4.0",
     "request": "^2.75.0",
-    "xtend": "^4.0.1"
+    "inquirer": "^1.2.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
