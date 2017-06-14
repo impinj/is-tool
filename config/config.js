@@ -3,6 +3,8 @@ module.exports = {
     "facilities",
     "readerDefinitions",
     "readerConfigurations",
+    "antennaConfigurations",
+    "thresholds",
     "recipes",
     "zoneMaps",
     "users"
