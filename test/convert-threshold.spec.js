@@ -705,7 +705,6 @@ describe('When converting readers in overhead offset arrangement, it', () => {
         }
       }
     }, "fv12");
-    //promise.then(result => console.log('Result:', JSON.stringify(result, null, 2)))
     return expect(promise).to.eventually.eql({
       "antennaConfigurations":[
         {
@@ -860,7 +859,6 @@ describe('When converting readers in overhead offset arrangement, it', () => {
         }
       }
     }, "fv12");
-    //promise.then(result => console.log('Result:', JSON.stringify(result, null, 2)))
     return expect(promise).to.eventually.eql({
       "antennaConfigurations":[
         {
