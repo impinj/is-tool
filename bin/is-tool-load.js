@@ -44,7 +44,7 @@ const itemsenseConfig = {
 loadFile(program.args[0])
 .then(
   (config) => {
-    console.log('Loading configuration...')
+    console.log('Loading configuration...');
     const itemsense = new Itemsense(itemsenseConfig);
     return loadIsConfig(itemsense, config, program.facility, program.addpassword);
   }

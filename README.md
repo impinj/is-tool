@@ -7,10 +7,14 @@
 The command line tool performs the following primary tasks:
 * Stores all ItemSense configuration into a file in JSON format.
 * Loads ItemSense configuration from a file.
-* Converts configuration from ItemSense 2016r4 format to ItemSense 2016r6 format.
+* Converts configuration file formats.
 * Replace existing configuration.
 * Delete specified configuration.
 * Remove all configuration.
+
+> * This tool is under active development and may contain bugs.  It is presented as-is, a configuration helper tool for ItemSense. If bugs are found, please raise an Issue.*
+<br/>
+For more information about ItemSense, check out http://developer.impinj.com.
 
 
 ## Getting Started
@@ -54,9 +58,12 @@ is-tool load -i 10.200.90.177 itemsense-config.json
 is-tool load -i 10.200.90.177 --addpassword itemsense-config.json
 ```
 
-### Convert to 2016r6 Format
+### Convert Format
 ```
-is-tool convert -i 10.200.90.177 itemsense2016r4-config.json
+is-tool convert -t to2016r6 itemsense2016r4-config.json
+```
+```
+is-tool convert -t threshold itemsense2016r4-config.json
 ```
 
 ### Clear All Config
@@ -126,13 +133,15 @@ The IP address is mandatory but username and password are optional. If they are 
 The ```--addpassword``` option is provided because it's not possible to get a user's password when querying for user configuration. This means if you used `is-tool save` to get the configuration of an ItemSense instance (including user configuration) with the intention to load it into a brand new clean ItemSense instance, a password has to be added to each user configuration before it can be loaded. This option does that for you.
 
 #### Convert
-This command converts configuration in a specified file to ItemSense 2016r6 format and then writes the converted configuration to a new file.
+Convert an ItemSense config files. Either convert a configuration file from ItemSense 2016r4 to 2016r6 format or convert ItemSense Threshold prototype format to ItemSense 2017r1 threshold format.
 
-Usage: `is-tool load [options] <file>`
+Usage: `is-tool convert [options] <file>`
 
 |Options|Description|
 |--------|------------|
 |\[file\]|The filename to read configuration from.|
+|-t --converttype <type> | The conversion type, one of 'to2016r6' or 'threshold'. |
+|-f --facility <name> | The name of the facility in which the converted thresholds should belong. Only applies when `converttype` of `threshold` is used. |
 
 The output file containing the converted configuration will be placed in the same location as the input file except that it's name will have "-converted" appended to it.
 
@@ -257,8 +266,13 @@ The convert function looks like the following:
 ```js
 isToolLib.convert(object);
 ```
+or
+```js
+isToolLib.convert(object, facilityName);
+```
 Where:
 **object** - is a javascript object which should contain ItemSense 2016r4 formatted configuration.
+**facilityName** - is the name of the facility in which the converted thresholds should belong.
 
 #### Clear
 ```js

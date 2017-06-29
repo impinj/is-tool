@@ -11,6 +11,7 @@ program
   .option('-u --user <user>', 'ItemSense Username')
   .option('-p --pass <pass>', 'ItemSense Password')
   .option('-c --completeclear', 'Remove everything including Impinj default configs')
+  .option('-y --yes', 'Pass yes to the clear confirmation question')
   .parse(process.argv);
 
 if (!program.ip) {
@@ -31,14 +32,15 @@ const question = {
   message: 'Are you sure you would like to remove all configuration from this ItemSense? (y/N)'
 };
 
-inquirer.prompt([question])
+const inquiryPromise = program.yes ? Promise.resolve({ ans: true }) : inquirer.prompt([question]);
+
+inquiryPromise
 .then(
   (str) => {
     if (!str.ans) {
       console.log('Exiting.....');
       process.exit(0);
     }
-
     console.log('Clearing......');
     return clearAllConfig(itemsense);
   }
