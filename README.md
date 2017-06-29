@@ -128,7 +128,7 @@ The ```--addpassword``` option is provided because it's not possible to get a us
 #### Convert
 This command converts configuration in a specified file to ItemSense 2016r6 format and then writes the converted configuration to a new file.
 
-Usage: `is-tool load [options] <file>`
+Usage: `is-tool convert [options] <file>`
 
 |Options|Description|
 |--------|------------|
