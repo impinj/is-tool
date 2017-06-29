@@ -56,7 +56,7 @@ is-tool load -i 10.200.90.177 --addpassword itemsense-config.json
 
 ### Convert to 2016r6 Format
 ```
-is-tool convert -i 10.200.90.177 itemsense2016r4-config.json
+is-tool convert itemsense2016r4-config.json
 ```
 
 ### Clear All Config
