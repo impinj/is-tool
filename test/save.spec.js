@@ -1,58 +1,54 @@
-const save = require('../is-tool-lib').save
-const sinon = require('sinon');
+const save = require('../is-tool-lib').save;
 const Itemsense = require('itemsense-node');
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
+const helpers = require('./helpers/help-functions');
 
-function getResult(clause, failMessage){
+function getResult(clause, failMessage) {
   return (clause ? Promise.resolve() : Promise.reject(new Error(failMessage)));
 }
 
-function loadFile(filename){
-  return new Promise(function(resolve, reject){
-    fs.readFile(filename, 'utf8', (err,data)=>{
-      if(err) return reject(err)
+function loadFile(filename) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filename, 'utf8', (err, data) => {
+      if (err) return reject(err);
       resolve(JSON.parse(data));
     });
   });
 }
 
 describe('When saving ItemSense configuration, it', () => {
-  before(()=>{
+  before(() => {
     const itemsenseConfig = {
-      "username": "admin",
-      "password": "admindefault",
-      "itemsenseUrl": `http://127.0.0.1/itemsense`
+      username: 'admin',
+      password: 'admindefault',
+      itemsenseUrl: 'http://127.0.0.1/itemsense',
     };
+    this.keys = [
+      'facilities',
+      'readerDefinitions',
+      'readerConfigurations',
+      'antennaConfigurations',
+      'thresholds',
+      'recipes',
+      'zoneMaps',
+      'users',
+    ];
     this.itemsense = new Itemsense(itemsenseConfig);
-    this.itemsense.facilities.getAll = sinon.stub(this.itemsense.facilities, "getAll")
-    this.itemsense.readerDefinitions.getAll = sinon.stub(this.itemsense.readerDefinitions, "getAll")
-    this.itemsense.readerConfigurations.getAll = sinon.stub(this.itemsense.readerConfigurations, "getAll")
-    this.itemsense.recipes.getAll = sinon.stub(this.itemsense.recipes, "getAll")
-    this.itemsense.zoneMaps.getAll = sinon.stub(this.itemsense.zoneMaps, "getAll")
-    this.itemsense.users.getAll = sinon.stub(this.itemsense.users, "getAll")
+    this.itemsense = helpers.setupISStubs(this.itemsense, this.keys, 'getAll');
   });
 
-  after(()=>{
-    this.itemsense.facilities.getAll.restore();
-    this.itemsense.readerDefinitions.getAll.restore();
-    this.itemsense.readerConfigurations.getAll.restore();
-    this.itemsense.recipes.getAll.restore();
-    this.itemsense.zoneMaps.getAll.restore();
-    this.itemsense.users.getAll.restore();
+  after(() => {
+    this.itemsense = helpers.restoreISStubs(this.itemsense, this.keys, 'getAll');
   });
-  afterEach(()=>{
-    if(fs.existsSync("./testfile.json")) fs.unlinkSync("./testfile.json");
-    this.itemsense.facilities.getAll.callCount = 0;
-    this.itemsense.recipes.getAll.callCount = 0;
-    this.itemsense.readerDefinitions.getAll.callCount = 0;
-    this.itemsense.readerConfigurations.getAll.callCount = 0;
-    this.itemsense.zoneMaps.getAll.callCount = 0;
-    this.itemsense.users.getAll.callCount = 0;
-  })
+
+  afterEach(() => {
+    if (fs.existsSync('./testfile.json')) fs.unlinkSync('./testfile.json');
+    this.itemsense = helpers.resetISStubs(this.itemsense, this.keys, 'getAll');
+  });
 
   it('should error if the passed itemsense object is null', ()=>{
-    let promise = save(null);
+    const promise = save(null);
     return expect(promise).to.eventually.be.rejected
       && expect(promise).to.be.rejectedWith('itemsense object is null');
   });

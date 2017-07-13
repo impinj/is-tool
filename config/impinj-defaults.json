@@ -1,12 +1,4 @@
 {
-  "users": [
-    {
-      "name": "ReaderAgent",
-      "roles": [
-        "ReaderAgent"
-      ]
-    }
-  ],
   "readerConfigurations": [
     {
       "name": "IMPINJ_Do_Nothing",
@@ -210,15 +202,196 @@
         "filter": null
       },
       "operation": "LOCATION"
+    },
+    {
+      "name": "IMPINJ_All_Thresholds",
+      "configuration": {
+        "readerMode": "MAX_THROUGHPUT",
+        "session": 2,
+        "searchMode": "DUAL_TARGET_WITH_BTOASELECT",
+        "tagPopulationEstimate": 0,
+        "transmitPowerInDbm": 30,
+        "polarization": null,
+        "filter": null,
+        "channelConfig": null
+      },
+      "operation": "THRESHOLD"
+    }
+  ],
+  "antennaConfigurations": [
+    {
+      "name": "xArray Overhead",
+      "side": null,
+      "in": [
+        {
+          "antennaId": 13
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 17
+        }
+      ]
+    },
+    {
+      "name": "xArray Side By Side Left",
+      "side": "LEFT",
+      "in": [
+        {
+          "antennaId": 13
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 17
+        }
+      ]
+    },
+    {
+      "name": "xArray Side By Side Right",
+      "side": "RIGHT",
+      "in": [
+        {
+          "antennaId": 13
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 17
+        }
+      ]
+    },
+    {
+      "name": "xArray Offset Left",
+      "side": "LEFT",
+      "in": [
+        {
+          "antennaId": 30
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 32
+        }
+      ]
+    },
+    {
+      "name": "xArray Offset Right",
+      "side": "RIGHT",
+      "in": [
+        {
+          "antennaId": 36
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 34
+        }
+      ]
+    },
+    {
+      "name": "xArray Offset Left End",
+      "side": "LEFT",
+      "in": [
+        {
+          "antennaId": 30
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 32
+        }
+      ],
+      "ignored": [
+        {
+          "antennaId": 36
+        },
+        {
+          "antennaId": 34
+        }
+      ]
+    },
+    {
+      "name": "xArray Offset Right End",
+      "side": "RIGHT",
+      "in": [
+        {
+          "antennaId": 36
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 34
+        }
+      ],
+      "ignored": [
+        {
+          "antennaId": 30
+        },
+        {
+          "antennaId": 32
+        }
+      ]
+    },
+    {
+      "name": "xSpan Overhead",
+      "side": null,
+      "in": [
+        {
+          "antennaId": 6
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 7
+        }
+      ]
+    },
+    {
+      "name": "xSpan Side By Side Left",
+      "side": "LEFT",
+      "in": [
+        {
+          "antennaId": 6
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 7
+        }
+      ]
+    },
+    {
+      "name": "xSpan Side By Side Right",
+      "side": "RIGHT",
+      "in": [
+        {
+          "antennaId": 6
+        }
+      ],
+      "out": [
+        {
+          "antennaId": 7
+        }
+      ]
     }
   ],
   "recipes": [
+    {
+      "name": "IMPINJ_All_Thresholds",
+      "type": "THRESHOLD",
+      "readerConfigurationName": "IMPINJ_All_Thresholds",
+      "readerConfigurations": {},
+      "thresholdIds": [],
+      "profile": "DefaultAlgoParams\n5\nOrZauB4bPwpSGM6hJkyRSKCjJh8bIr0mtpeIywaLjwz4ZDMTHsxt+/0RFVtTGPKN91k1OtYMNXiPjdPJp4b4TdfdhW3XWRPPYipDkr2gO+6CpISuyNhUD5CC2f/r6ryRZgHVxjc+MaDJWlpLJKQ9qHdn8ZmQJIpzpV2x8F6VW4iuy2MlVsSRmCQe3kimqI16yYu4ZqtHZ5hZ471DmzGqD++v6NszEu8MpPkXOx+XwPGMUY3CsZKGf//Z75bNvffIv0x8G8gVg1VI0jgJCxhNKK7y1dRA89qJ2uBIilyWRjrlbRIiKh5W+jtZTP4ggOvVsEW9PPNzw3akbwquvhbJh5enMiv6cLc+YFo/8MZBLq8/9yPSRrmVF/kwWGxcPN+BmDH9elPpYsOCjFLPtXEwdoD60bNSr+iq+dIk2i7kDWa34OXVsKU43V+mQdTTsiduSGYKshuPLhV8dPG7iLmts4f1zyxAS6Iry2aC1AlsRNsZUjcc7wfeoBnbnGA4427mJTVDbscRXijAHaSZl/B4RPwtDDdhLialzcDiRrkZT6GAcVI1/Nzyhs1mEjVyiq9pbmETsIKLowUGqWe2A1PfCtqLuVkFd8w8GgG1CpHrZ+t9BjjjsviWQgKie6IqZjFkIFMyb7GpJ17oDBzGn9i8XKm0XgcGRTQ1xfjwcYHvBKddcgKWL9utMzPVbOryFl0Goo5QO5B1UcaPVbU5tY7Z9ZUSszXPS9ctcqd8qaMb0TXRDWljLPPZOX/+0PWkKeqC21uGONBjudoX31vtyH8/8rfCMiX4ZzS003iDWIF60YQJ7S352CqnGCB3WEZFAOvnDRkDQcjll32kpcSIuaGgukbG7bK12l2GEvhHQDZ3rkoFLZkdcnNMdPy5AnvVL/GLh4IEfzueoiEFSk6vS+GE5Y9yDIs7gGBFdoEPPDB4GNFD2f2caU6QiBYS545ugLrlXzAgqCUSewbry/eqDSV7h5zNww83dnFBH0Pn445ZFJ8fHqOWq0TxgM8U1OtzYOHFCYCWcp/zc9vd4tssneyEpA3cqZlxGFX0V4M3fADu+jDtFzNIh8U72amiMV2m71Xj",
+      "iterationDataLogEnabled": false
+    },
     {
       "name": "IMPINJ_Deep_Scan_Inventory",
       "type": "INVENTORY",
       "readerConfigurationName": "IMPINJ_Deep_Scan_Inventory",
       "tagHeartbeatMinutes": 5,
-      "tagHeartbeatDuration": null,
+      "tagHeartbeatDuration": "PT5M",
       "tagExpiryDuration": null,
       "readerConfigurations": {},
       "locationAggregationModel": "BY_TIME",
@@ -230,7 +403,7 @@
       "type": "INVENTORY",
       "readerConfigurationName": "IMPINJ_Dense_Reader_Mode_Inventory",
       "tagHeartbeatMinutes": 5,
-      "tagHeartbeatDuration": null,
+      "tagHeartbeatDuration": "PT5M",
       "tagExpiryDuration": null,
       "readerConfigurations": {},
       "locationAggregationModel": "BY_TIME",
@@ -242,7 +415,7 @@
       "type": "LOCATION",
       "readerConfigurationName": "IMPINJ_Dense_Reader_Mode_Location",
       "tagHeartbeatMinutes": 5,
-      "tagHeartbeatDuration": null,
+      "tagHeartbeatDuration": "PT5M",
       "tagExpiryDuration": null,
       "readerConfigurations": {},
       "minimumMovementInMeters": 1,
@@ -254,7 +427,7 @@
       "type": "LOCATION",
       "readerConfigurationName": "IMPINJ_Deep_Scan_Location",
       "tagHeartbeatMinutes": 5,
-      "tagHeartbeatDuration": null,
+      "tagHeartbeatDuration": "PT5M",
       "tagExpiryDuration": null,
       "readerConfigurations": {},
       "minimumMovementInMeters": 1,
@@ -266,7 +439,7 @@
       "type": "INVENTORY",
       "readerConfigurationName": "IMPINJ_Deep_Scan_Inventory_xSpan",
       "tagHeartbeatMinutes": 5,
-      "tagHeartbeatDuration": null,
+      "tagHeartbeatDuration": "PT5M",
       "tagExpiryDuration": null,
       "readerConfigurations": {},
       "locationAggregationModel": "BY_TIME",
@@ -278,7 +451,7 @@
       "type": "LOCATION",
       "readerConfigurationName": "IMPINJ_Fast_Location",
       "tagHeartbeatMinutes": 5,
-      "tagHeartbeatDuration": null,
+      "tagHeartbeatDuration": "PT5M",
       "tagExpiryDuration": null,
       "readerConfigurations": {},
       "minimumMovementInMeters": 1,

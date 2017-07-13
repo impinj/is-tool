@@ -2,71 +2,54 @@ const removeConfig = require('../is-tool-lib').remove;
 const sinon = require('sinon');
 const Itemsense = require('itemsense-node');
 
+const helpers = require('./helpers/help-functions');
+
 function getResult(clause, failMessage){
   return (clause ? Promise.resolve() : Promise.reject(new Error(failMessage)));
 }
 
-function setReturns(config, stubbedIS){
-  const categories = [
-    'facilities',
-    'users',
-    'recipes',
-    'readerDefinitions',
-    'readerConfigurations',
-    'zoneMaps'
-  ]
-
-  categories.forEach((category) => {
-    stubbedIS[category].delete.returns(Promise.resolve());
-  });
-}
-
 describe('When deleting configuration from itemsense, it', () => {
-  before(()=>{
+  before(() => {
     const itemsenseConfig = {
-      "username": "admin",
-      "password": "admindefault",
-      "itemsenseUrl": `http://127.0.0.1/itemsense`
+      username: 'admin',
+      password: 'admindefault',
+      itemsenseUrl: 'http://127.0.0.1/itemsense',
     };
+
     this.itemsense = new Itemsense(itemsenseConfig);
-    this.itemsense.facilities.delete = sinon.stub(this.itemsense.facilities, "delete");
-    this.itemsense.readerDefinitions.delete = sinon.stub(this.itemsense.readerDefinitions, "delete");
-    this.itemsense.readerConfigurations.delete = sinon.stub(this.itemsense.readerConfigurations, "delete");
-    this.itemsense.recipes.delete = sinon.stub(this.itemsense.recipes, "delete");
-    this.itemsense.zoneMaps.delete = sinon.stub(this.itemsense.zoneMaps, "delete");
-    this.itemsense.users.delete = sinon.stub(this.itemsense.users, "delete");
+    this.keys = [
+      'facilities',
+      'readerDefinitions',
+      'readerConfigurations',
+      'antennaConfigurations',
+      'thresholds',
+      'recipes',
+      'zoneMaps',
+      'users',
+    ];
+    this.itemsense = new Itemsense(itemsenseConfig);
+    this.itemsense = helpers.setupISStubs(this.itemsense, this.keys, 'delete');
   });
 
-  after(()=>{
-    this.itemsense.facilities.delete.restore();
-    this.itemsense.readerDefinitions.delete.restore();
-    this.itemsense.readerConfigurations.delete.restore();
-    this.itemsense.recipes.delete.restore();
-    this.itemsense.zoneMaps.delete.restore();
-    this.itemsense.users.delete.restore();
-
+  after(() => {
+    this.itemsense = helpers.restoreISStubs(this.itemsense, this.keys, 'delete');
   });
 
-  afterEach(()=>{
-    this.itemsense.facilities.delete.reset();
-    this.itemsense.readerDefinitions.delete.reset();
-    this.itemsense.readerConfigurations.delete.reset();
-    this.itemsense.recipes.delete.reset();
-    this.itemsense.zoneMaps.delete.reset();
-    this.itemsense.users.delete.reset();
+  afterEach(() => {
+    this.itemsense = helpers.resetISStubs(this.itemsense, this.keys, 'delete');
   });
 
   it('should return a rejected promise when null itemsense connection is passed', () => {
-    let promise = removeConfig(null);
+    const promise = removeConfig(null);
     return expect(promise).to.eventually.be.rejectedWith('itemsense object is null');
   });
 
   it('should return a rejected promise when null config object is passed', () => {
-    let promise = removeConfig(this.itemsense, null);
+    const promise = removeConfig(this.itemsense, null);
     return expect(promise).to.eventually.be.rejectedWith('config object is null');
   });
 
-  it('should call delete on each config item', ()=>{
+  it('should call delete on each config item', () => {
     const stubbedIS = this.itemsense;
     const config = {
       facilities: [
@@ -80,31 +63,31 @@ describe('When deleting configuration from itemsense, it', () => {
       zoneMaps: [],
       readerDefinitions: [],
       readerConfigurations: [{
-        "name": "SVL_SPEEDWAY_2",
-        "configuration": {
-          "readerMode": "MODE_1002",
-          "session": 2,
-          "searchMode": "DUAL_TARGET",
-          "tagPopulationEstimate": 32,
-          "transmitPowerInDbm": null,
-          "polarization": null,
-          "antennas": [
+        name: 'SVL_SPEEDWAY_2',
+        configuration: {
+          readerMode: 'MODE_1002',
+          session: 2,
+          searchMode: 'DUAL_TARGET',
+          tagPopulationEstimate: 32,
+          transmitPowerInDbm: null,
+          polarization: null,
+          antennas: [
             1,
             4
           ],
-          "filter": null,
-          "channelConfig": null
+          filter: null,
+          channelConfig: null
         },
-        "operation": "INVENTORY"
+        operation: 'INVENTORY'
       }],
       users: [],
       recipes: []
     };
-    setReturns(config, stubbedIS);
 
     let promise = removeConfig(stubbedIS, config);
     return expect(promise).to.eventually.be.fulfilled
     .then(() => {
+      expect(stubbedIS.readerConfigurations.delete.calledWith('SVL_SPEEDWAY_2')).to.be.true;
       return getResult(
         stubbedIS.facilities.delete.calledTwice
         && !stubbedIS.readerDefinitions.delete.called
@@ -117,46 +100,91 @@ describe('When deleting configuration from itemsense, it', () => {
     });
   });
 
-  it('should return a failed promise when the call to itemsense returns an error', ()=>{
+  it('should use the id as the delete key for threshold and antennConfigurations', ()=>{
+    const stubbedIS = this.itemsense;
+    const config = {
+      antennaConfigurations: [
+        {
+          id: 58,
+          name: '11-F0-0A-center',
+          side: null,
+          in: [
+            {
+              antennaId: 6
+            },
+            {
+              antennaId: 8
+            }
+          ],
+          out: [
+            {
+              antennaId: 7
+            }
+          ]
+        }
+      ],
+      thresholds: [
+        {
+          id: 12,
+          name: 2,
+          facility: 'DEFAULT',
+          readerArrangement: 'OVERHEAD',
+          readers: {
+            'xSpan-11-F0-0A': {
+              antennaConfigurationId: 58
+            }
+          }
+        }
+      ]
+    };
+
+    const promise = removeConfig(stubbedIS, config);
+    return expect(promise).to.eventually.be.fulfilled
+    .then(() => {
+      expect(stubbedIS.antennaConfigurations.delete.callCount).to.equal(1);
+      expect(stubbedIS.antennaConfigurations.delete.args[0]).to.deep.equal([58]);
+      expect(stubbedIS.thresholds.delete.callCount).to.equal(1);
+      return expect(stubbedIS.thresholds.delete.args[0]).to.deep.equal([12]);
+    });
+  });
+
+  it('should return a failed promise when the call to itemsense returns an error', () => {
     const stubbedIS = this.itemsense;
     const config = {
       facilities: [
         {
-          "name": 'IDL'
+          name: 'IDL'
         },
         {
-          "name": 'Test1'
+          name: 'Test1'
         }
       ],
       zoneMaps: [],
       readerDefinitions: [],
       readerConfigurations: [{
-        "name": "SVL_SPEEDWAY_2",
-        "configuration": {
-          "readerMode": "MODE_1002",
-          "session": 2,
-          "searchMode": "DUAL_TARGET",
-          "tagPopulationEstimate": 32,
-          "transmitPowerInDbm": null,
-          "polarization": null,
-          "antennas": [
-            1,
-            4
-          ],
-          "filter": null,
-          "channelConfig": null
+        name: 'SVL_SPEEDWAY_2',
+        configuration: {
+          readerMode: 'MODE_1002',
+          session: 2,
+          searchMode: 'DUAL_TARGET',
+          tagPopulationEstimate: 32,
+          transmitPowerInDbm: null,
+          polarization: null,
+          antennas: [1, 4],
+          filter: null,
+          channelConfig: null
         },
-        "operation": "INVENTORY"
+        operation: 'INVENTORY'
       }],
       users: [],
       recipes: []
     };
-    setReturns(config, stubbedIS);
+
     stubbedIS.readerConfigurations.delete.returns(Promise.reject('test rejection'));
 
     let promise = removeConfig(stubbedIS, config);
     return expect(promise).to.eventually.be.rejected
-    && expect(promise).to.eventually.be.rejectedWith('test rejection');s
+    && expect(promise).to.eventually.be.rejectedWith('test rejection');
   });
 
   it('should not remove Admin nor ReaderAgent user nor DEFAULT facility', () =>{
@@ -164,24 +192,24 @@ describe('When deleting configuration from itemsense, it', () => {
     const config =  {
       users: [
         {
-          "name": "Admin",
-          "roles": [
-            "Admin"
+          name: 'Admin',
+          roles: [
+            'Admin'
           ]
         },
         {
-          "name": "ReaderAgent",
-          "roles": [
-            "ReaderAgent"
+          name: 'ReaderAgent',
+          roles: [
+            'ReaderAgent'
           ]
         }
       ],
       facilities: [
-        { "name" : "DEFAULT"}
+        { name : 'DEFAULT'}
       ]
     };
-    setReturns(config, stubbedIS);
-    let promise = removeConfig(stubbedIS, config );
+
+    let promise = removeConfig(stubbedIS, config);
     return expect(promise).to.eventually.be.fulfilled
     .then(() => {
       return getResult(
@@ -190,7 +218,5 @@ describe('When deleting configuration from itemsense, it', () => {
       )
     });
   });
-
-
 
 });
