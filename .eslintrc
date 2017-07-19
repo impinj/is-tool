@@ -1,10 +1,18 @@
 {
   "extends": "airbnb",
-  "rules": {
-    "react/jsx-quotes": 0,
-    "jsx-quotes": [2, "prefer-double"],
-    "no-console": off,
-    "comma-dangle": off,
-    "global-require": off
+  "globals": {
+    "before": false,
+    "after": false,
+    "describe": false,
+    "afterEach": false,
+    "expect": false,
+    "it": false
   },
+  "rules": {
+    "no-console": "off",
+    "global-require": "off",
+    "no-underscore-dangle": "off",
+    "comma-dangle": "off",
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["acc"] }]
+  }
 }

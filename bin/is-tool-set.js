@@ -21,6 +21,7 @@ program
   .option('-a --addpassword', 'Add a password to a user, necessary when adding a new user to the system')
   .option('-f --facility <facility>', 'Name of new facility in which to add readers')
   .option('-c --completeclear', 'Remove everything including Impinj defaults before loading')
+  .option('-y --yes', 'Pass yes to the clear confirmation question')
   .parse(process.argv);
 
 if (!program.args || program.args.length === 0) {
@@ -46,8 +47,9 @@ const question = {
   message: 'Are you sure you would like to remove all configuration from this ItemSense? (y/N)'
 };
 const itemsense = new Itemsense(itemsenseConfig);
+const inquiryPromise = program.yes ? Promise.resolve({ ans: true }) : inquirer.prompt([question]);
 
-inquirer.prompt([question])
+inquiryPromise
 .then(
   (str) => {
     if (!str.ans) {

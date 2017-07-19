@@ -58,6 +58,10 @@ loadFile(program.args[0])
   if (reason.message) {
     errorMsg = `Loading config failed: ${reason.message}`;
     if (reason.error) errorMsg += `\n ${JSON.stringify(reason.error)}`;
+    if (reason.options && reason.options.body) {
+      errorMsg += '\n Error occured when loading: ';
+      errorMsg += `\n ${JSON.stringify(reason.options.body, null, 2)}`;
+    }
   } else {
     errorMsg = reason;
   }

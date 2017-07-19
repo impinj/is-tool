@@ -1,81 +1,49 @@
 const clear = require('../is-tool-lib').clear;
-const sinon = require('sinon');
 const Itemsense = require('itemsense-node');
+const helpers = require('./helpers/help-functions');
 
 function getResult(clause, failMessage){
   return (clause ? Promise.resolve() : Promise.reject(new Error(failMessage)));
 }
 
-function setReturns(config, stubbedIS){
-  const categories = [
-    'facilities',
-    'users',
-    'recipes',
-    'readerDefinitions',
-    'readerConfigurations',
-    'zoneMaps'
-  ]
-
-  categories.forEach((category) => {
-    stubbedIS[category].getAll.returns(Promise.resolve(config[category]));
-    stubbedIS[category].delete.returns(Promise.resolve());
+function setReturns(config, stubbedIS, keys) {
+  keys.forEach((key) => {
+    stubbedIS[key].getAll.returns(Promise.resolve(config[key]));
+    stubbedIS[key].delete.returns(Promise.resolve());
   });
 }
 
 describe('When clearing configuration from itemsense, it', () => {
-  before(()=>{
+  before(() => {
     const itemsenseConfig = {
-      "username": "admin",
-      "password": "admindefault",
-      "itemsenseUrl": `http://127.0.0.1/itemsense`
+      username: 'admin',
+      password: 'admindefault',
+      itemsenseUrl: 'http://127.0.0.1:8000/itemsense',
     };
+    this.keys = [
+      'facilities',
+      'readerDefinitions',
+      'readerConfigurations',
+      'antennaConfigurations',
+      'thresholds',
+      'recipes',
+      'zoneMaps',
+      'users',
+    ];
+
     this.itemsense = new Itemsense(itemsenseConfig);
-    this.itemsense.facilities.getAll = sinon.stub(this.itemsense.facilities, "getAll");
-    this.itemsense.readerDefinitions.getAll = sinon.stub(this.itemsense.readerDefinitions, "getAll");
-    this.itemsense.readerConfigurations.getAll = sinon.stub(this.itemsense.readerConfigurations, "getAll");
-    this.itemsense.recipes.getAll = sinon.stub(this.itemsense.recipes, "getAll");
-    this.itemsense.zoneMaps.getAll = sinon.stub(this.itemsense.zoneMaps, "getAll");
-    this.itemsense.users.getAll = sinon.stub(this.itemsense.users, "getAll");
-
-    this.itemsense.facilities.delete = sinon.stub(this.itemsense.facilities, "delete");
-    this.itemsense.readerDefinitions.delete = sinon.stub(this.itemsense.readerDefinitions, "delete");
-    this.itemsense.readerConfigurations.delete = sinon.stub(this.itemsense.readerConfigurations, "delete");
-    this.itemsense.recipes.delete = sinon.stub(this.itemsense.recipes, "delete");
-    this.itemsense.zoneMaps.delete = sinon.stub(this.itemsense.zoneMaps, "delete");
-    this.itemsense.users.delete = sinon.stub(this.itemsense.users, "delete");
+    this.itemsense = helpers.setupISStubs(this.itemsense, this.keys, 'getAll');
+    this.itemsense = helpers.setupISStubs(this.itemsense, this.keys, 'delete');
   });
 
-  after(()=>{
-    this.itemsense.facilities.getAll.restore();
-    this.itemsense.readerDefinitions.getAll.restore();
-    this.itemsense.readerConfigurations.getAll.restore();
-    this.itemsense.recipes.getAll.restore();
-    this.itemsense.zoneMaps.getAll.restore();
-    this.itemsense.users.getAll.restore();
-
-    this.itemsense.facilities.delete.restore();
-    this.itemsense.readerDefinitions.delete.restore();
-    this.itemsense.readerConfigurations.delete.restore();
-    this.itemsense.recipes.delete.restore();
-    this.itemsense.zoneMaps.delete.restore();
-    this.itemsense.users.delete.restore();
-
+  after(() => {
+    this.itemsense = helpers.restoreISStubs(this.itemsense, this.keys, 'getAll');
+    this.itemsense = helpers.restoreISStubs(this.itemsense, this.keys, 'delete');
   });
 
-  afterEach(()=>{
-    this.itemsense.facilities.getAll.reset();
-    this.itemsense.readerDefinitions.getAll.reset();
-    this.itemsense.readerConfigurations.getAll.reset();
-    this.itemsense.recipes.getAll.reset();
-    this.itemsense.zoneMaps.getAll.reset();
-    this.itemsense.users.getAll.reset();
-
-    this.itemsense.facilities.delete.reset();
-    this.itemsense.readerDefinitions.delete.reset();
-    this.itemsense.readerConfigurations.delete.reset();
-    this.itemsense.recipes.delete.reset();
-    this.itemsense.zoneMaps.delete.reset();
-    this.itemsense.users.delete.reset();
+  afterEach(() => {
+    this.itemsense = helpers.resetISStubs(this.itemsense, this.keys, 'getAll');
+    this.itemsense = helpers.resetISStubs(this.itemsense, this.keys, 'delete');
   });
 
   it('should return a rejected promise when null itemsense connection is passed', () => {
@@ -89,12 +57,13 @@ describe('When clearing configuration from itemsense, it', () => {
       facilities: [],
       zoneMaps: [],
       readerDefinitions: [],
+      antennaConfigurations: [],
+      thresholds: [],
       readerConfigurations: [],
       users: [],
-      recipes: []
+      recipes: [],
     };
-    setReturns(config, stubbedIS);
-
+    setReturns(config, stubbedIS, this.keys);
     let promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.fulfilled
     .then(() => {
@@ -149,7 +118,7 @@ describe('When clearing configuration from itemsense, it', () => {
       users: [],
       recipes: []
     };
-    setReturns(config, stubbedIS);
+    setReturns(config, stubbedIS, this.keys);
 
     let promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.fulfilled
@@ -206,7 +175,7 @@ describe('When clearing configuration from itemsense, it', () => {
       users: [],
       recipes: []
     };
-    setReturns(config, stubbedIS);
+    setReturns(config, stubbedIS, this.keys);
     stubbedIS.readerConfigurations.delete.returns(Promise.reject('test rejection'));
 
     let promise = clear(stubbedIS);
@@ -235,7 +204,7 @@ describe('When clearing configuration from itemsense, it', () => {
         { "name" : "DEFAULT"}
       ]
     };
-    setReturns(config, stubbedIS);
+    setReturns(config, stubbedIS, this.keys);
     let promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.fulfilled
     .then(() => {
@@ -245,7 +214,4 @@ describe('When clearing configuration from itemsense, it', () => {
       )
     });
   });
-
-
-
 });

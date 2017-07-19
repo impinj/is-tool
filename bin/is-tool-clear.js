@@ -41,6 +41,7 @@ inquiryPromise
       console.log('Exiting.....');
       process.exit(0);
     }
+    console.log(`Connecting to ItemSense: ${JSON.stringify(itemsenseConfig)}`);
     console.log('Clearing......');
     return clearAllConfig(itemsense);
   }
