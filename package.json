@@ -1,6 +1,6 @@
 {
   "name": "is-tool",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Load, Save and Delete ItemSense configuration",
   "main": "is-tool-lib",
   "scripts": {
@@ -16,7 +16,7 @@
     "async": "^2.1.1",
     "commander": "^2.9.0",
     "get-stdin": "^5.0.1",
-    "itemsense-node": "^1.4.0",
+    "itemsense-node": "^1.5.0",
     "request": "^2.75.0",
     "inquirer": "^1.2.1"
   },
