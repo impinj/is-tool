@@ -264,7 +264,7 @@ Usage: `is-tool set [options] <file>`
 |  -i --ip \<ipaddr\>  |ItemSense IP address from which to save the configuration|
 |  -u --user \<user\>  |An ItemSense username for an admin level user |
 |  -p --pass \<pass\>  |ItemSense password for the above user |
-|  -a --addpassword  |Add a default password of 'defualt01' to a user. Necessary when adding a new user to the system.|
+|  -a --addpassword  |Add a default password of 'defualt01' to a user. Necessary when adding a new user to the system. The password won't be added if the user already exists|
 |  -f --facility \<pass\>  |Name of new facility in which to add readers |
 |  -c --completeclear | Remove everything including Impinj Defaults. |
 
