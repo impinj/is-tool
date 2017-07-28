@@ -321,7 +321,7 @@ describe('When loading an object, it', () => {
     let config = {
       "readerConfigurations": [{
           "name": "Do_Nothing",
-          "configuration": {
+          "configuration": { 
             "readerMode": "MAX_THROUGHPUT",
             "session": 0
           },
@@ -695,6 +695,44 @@ describe('When loading an object, it', () => {
       .then(() => {
         expect(this.itemsense.users.create.getCall(1).args).to.deep.equal([secondCallConfig])
         expect(this.itemsense.users.create.callCount).to.equal(2);
+      });
+    });
+
+    it('should not create users with a default password if user already exists', ()=>{
+      this.itemsense.users.update.returns(Promise.resolve({}));
+      let stubbedIS = this.itemsense;
+      let config = {
+        "users": [    {
+          "name": "Admin1",
+          "roles": [
+            "Admin"
+          ]
+        },
+        {
+          "name": "analyst1",
+          "roles": [
+            "DataReader"
+          ]
+        }]
+      };
+      let firstCallConfig =
+        {
+          "name": "Admin1",
+          "roles": [
+            "Admin"
+          ],
+        };
+      let secondCallConfig =
+        {
+          name: 'analyst1',
+          roles: [ 'DataReader' ],
+        };
+      this.itemsense.users.getAll.returns(Promise.resolve(config.users));
+      let promise = load(stubbedIS, config, null, true);
+      return expect(promise).to.eventually.be.fulfilled
+      .then(() => {
+        expect(this.itemsense.users.update.getCall(1).args).to.deep.equal([secondCallConfig])
+        expect(this.itemsense.users.update.callCount).to.equal(2);
       });
     });
 
