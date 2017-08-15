@@ -910,7 +910,6 @@ describe('When converting readers in overhead offset arrangement, it', () => {
   });
 });
 
-
 describe('When converting readers, it', () => {
   it('should assign all thresholds to the pass facilty', () => {
     let promise = converter({
@@ -985,6 +984,176 @@ describe('When converting readers, it', () => {
           "readerArrangement": "OVERHEAD_OFFSET",
           "readers": {
             "xSpan-11-F0-0A": {  "antennaConfigurationId": "left-out-18-in-20" }
+          }
+        },
+        {
+          "name": "3",
+          "facility": "test",
+          "readerArrangement": "OVERHEAD_OFFSET",
+          "readers": {
+            "xSpan-11-F0-0A": { "antennaConfigurationId": "right-out-16-24-in-14" }
+          }
+        }
+      ]
+    });
+  });
+
+  it('accepts any casing for antenna orientation', () => {
+    let promise = converter({
+      "reader-manager-config": {
+        "readers": {
+          "11-F0-0A": {
+            "antennas": [{
+              "antenna": 18,
+              "door": "2",
+              "side": "left",
+              "orientation": "out"
+            },
+            {
+              "antenna": 20,
+              "door": "2",
+              "side": "left",
+              "orientation": "IN"
+            },
+            {
+              "antenna": 16,
+              "door": "3",
+              "side": "right",
+              "orientation": "OUT"
+            },
+            {
+              "antenna": 24,
+              "door": "3",
+              "side": "right",
+              "orientation": "out"
+            },
+            {
+              "antenna": 14,
+              "door": "3",
+              "side": "right",
+              "orientation": "in"
+            }
+            ],
+            "host": "xSpan-11-F0-0A"
+          }
+        }
+      }
+    }, "test");
+
+    return expect(promise).to.eventually.eql({
+      "antennaConfigurations": [
+        {
+          "name": "right-out-16-24-in-14",
+          "side": "right",
+          "out": [
+            { "antennaId": 16 },
+            { "antennaId": 24 }
+          ],
+          "in": [
+            { "antennaId": 14 }
+          ]
+        },
+        {
+          "name": "left-out-18-in-20",
+          "side": "left",
+          "out": [
+            { "antennaId": 18 }
+          ],
+          "in": [
+            { "antennaId": 20 }
+          ]
+        }
+      ],
+      "thresholds": [
+        {
+          "name": "2",
+          "facility": "test",
+          "readerArrangement": "OVERHEAD_OFFSET",
+          "readers": {
+            "xSpan-11-F0-0A": { "antennaConfigurationId": "left-out-18-in-20" }
+          }
+        },
+        {
+          "name": "3",
+          "facility": "test",
+          "readerArrangement": "OVERHEAD_OFFSET",
+          "readers": {
+            "xSpan-11-F0-0A": { "antennaConfigurationId": "right-out-16-24-in-14" }
+          }
+        }
+      ]
+    });
+  });
+
+  it('gracefully handles missing orientations', () => {
+    let promise = converter({
+      "reader-manager-config": {
+        "readers": {
+          "11-F0-0A": {
+            "antennas": [{
+              "antenna": 18,
+              "door": "2",
+              "side": "left"
+            },
+            {
+              "antenna": 20,
+              "door": "2",
+              "side": "left",
+              "orientation": "IN"
+            },
+            {
+              "antenna": 16,
+              "door": "3",
+              "side": "right",
+              "orientation": "OUT"
+            },
+            {
+              "antenna": 24,
+              "door": "3",
+              "side": "right",
+              "orientation": "out"
+            },
+            {
+              "antenna": 14,
+              "door": "3",
+              "side": "right",
+              "orientation": "in"
+            }
+            ],
+            "host": "xSpan-11-F0-0A"
+          }
+        }
+      }
+    }, "test");
+
+    return expect(promise).to.eventually.eql({
+      "antennaConfigurations": [
+        {
+          "name": "right-out-16-24-in-14",
+          "side": "right",
+          "out": [
+            { "antennaId": 16 },
+            { "antennaId": 24 }
+          ],
+          "in": [
+            { "antennaId": 14 }
+          ]
+        },
+        {
+          "name": "left-in-20",
+          "side": "left",
+          "in": [
+            { "antennaId": 20 }
+          ]
+        }
+      ],
+      "thresholds": [
+        {
+          "name": "2",
+          "facility": "test",
+          "readerArrangement": "OVERHEAD_OFFSET",
+          "readers": {
+            "xSpan-11-F0-0A": { "antennaConfigurationId": "left-in-20" }
           }
         },
         {
