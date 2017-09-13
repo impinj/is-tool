@@ -475,29 +475,34 @@ describe('When loading an object, it', () => {
       this.itemsense.zoneMaps.update.returns(Promise.resolve({}));
       let stubbedIS = this.itemsense;
       let data = {
-          "name": "Mead",
-          "floor": "12",
-          "points": [
-            {
-              "x": 23.66,
-              "y": 9,
-              "z": 0
-            },
-            {
-              "x": 29.9,
-              "y": 9,
-              "z": 0
-            }
-          ]
-        };
+        "name": "Mead",
+        "floor": "12",
+        "points": [
+          {
+            "x": 23.66,
+            "y": 9,
+            "z": 0
+          },
+          {
+            "x": 29.9,
+            "y": 9,
+            "z": 0
+          }
+        ]
+      };
+      let zoneMap = {
+          "name": "test",
+          "facility": "DEFAULT",
+          "zones": [data],
+      }
       let promise = load(stubbedIS, {
-        "zoneMaps": [data]
+        "zoneMaps": [zoneMap]
       });
       return expect(promise).to.eventually.be.fulfilled
         .then(() =>{
           return getResult(
             this.itemsense.zoneMaps.create.calledOnce
-            && this.itemsense.zoneMaps.create.calledWith(data)
+            && this.itemsense.zoneMaps.create.calledWith(zoneMap)
           );
         });
     });
@@ -520,36 +525,76 @@ describe('When loading an object, it', () => {
             }
           ]
         };
+      let zoneMap = {
+          "name": "test",
+          "facility": "DEFAULT",
+          "zones": [data],
+      }
       let promise = load(stubbedIS, {
-        "zoneMaps": [data]
+        "zoneMaps": [zoneMap]
       });
       this.itemsense.zoneMaps.update.returns(Promise.resolve({}));
-      this.itemsense.zoneMaps.getAll.returns(Promise.resolve([data]));
+      this.itemsense.zoneMaps.getAll.returns(Promise.resolve([zoneMap]));
 
       return expect(promise).to.eventually.be.fulfilled
         .then(() =>{
           return getResult(
             this.itemsense.zoneMaps.update.calledOnce
-            && this.itemsense.zoneMaps.update.calledWith(data)
+            && this.itemsense.zoneMaps.update.calledWith(zoneMap)
           );
         });
     });
 
-    it('should update multiple zoneMaps without error.', ()=>{
+    it('should create a zoneMap without error when z is null', ()=>{
       let stubbedIS = this.itemsense;
-      let config = {
-        "zoneMaps": [        {
-          "name": "Mead",
-          "floor": "12",
-          "points": [
-            {
-              "x": 23.66,
-              "y": 9,
-              "z": 0
-            }
-          ]
+      const newPoints = [
+        {
+          "x": 23.66,
+          "y": 9
         },
         {
+          "x": 29.9,
+          "y": 9
+        }
+      ];
+      let data = {
+          "name": "Mead",
+          "floor": "12",
+          "points": [
+            {
+              "x": 23.66,
+              "y": 9,
+              "z": null
+            },
+            {
+              "x": 29.9,
+              "y": 9,
+              "z": null
+            }
+          ]
+        };
+      let zoneMap = {
+          "name": "test",
+          "facility": "DEFAULT",
+          "zones": [data],
+      }
+      let promise = load(stubbedIS, {
+        "zoneMaps": [ zoneMap ]
+      });
+      this.itemsense.zoneMaps.create.returns(Promise.resolve({}));
+      this.itemsense.zoneMaps.getAll.returns(Promise.resolve([zoneMap]));
+      zoneMap.zones[0].points = newPoints;
+      return promise
+      .then(() =>{
+        expect(this.itemsense.zoneMaps.update.calledOnce).to.be.true;
+        expect(this.itemsense.zoneMaps.update.getCall(0).args).to.deep.equal([zoneMap])            
+      });
+
+    });
+
+    it('should update multiple zoneMaps without error.', ()=>{
+      let stubbedIS = this.itemsense;
+      let data = {
           "name": "Mead",
           "floor": "12",
           "points": [
@@ -562,33 +607,82 @@ describe('When loading an object, it', () => {
               "x": 29.9,
               "y": 9,
               "z": 0
-            },
-            {
-              "x": 29.9,
-              "y": 0.1,
-              "z": 0
-            },
-            {
-              "x": 23.64,
-              "y": 0.1,
-              "z": 0
-            },
-            {
-              "x": 22.78,
-              "y": 6.45,
-              "z": 0
             }
           ]
-        }]
+        };
+      let zoneMap = {
+          "name": "test",
+          "facility": "DEFAULT",
+          "zones": [data],
+      }
+      const config = {
+        "zoneMaps": [ zoneMap, zoneMap ]
       };
       this.itemsense.zoneMaps.update.returns(Promise.resolve({}));
       this.itemsense.zoneMaps.getAll.returns(Promise.resolve(config.zoneMaps));
 
       let promise = load(stubbedIS, config);
-      return expect(promise).to.eventually.be.fulfilled
-        .then(() => {
-          return getResult(this.itemsense.zoneMaps.update.callCount === 2);
-        });
+      return promise
+      .then(() => {
+        expect(this.itemsense.zoneMaps.update.callCount).to.equal(2);
+        expect(this.itemsense.zoneMaps.update.getCall(1).args).to.deep.equal([config.zoneMaps[1]]);
+        expect(this.itemsense.zoneMaps.update.getCall(0).args).to.deep.equal([config.zoneMaps[0]]);
+      });
+    });
+
+    it('should update multiple zoneMaps and remove z value on each.', ()=>{
+      let stubbedIS = this.itemsense;
+      const newPoints = [
+        {
+          "x": 23.66,
+          "y": 9,
+        },
+        {
+          "x": 29.9,
+          "y": 9,
+        }
+      ];
+      let data = {
+          "name": "Mead",
+          "floor": "12",
+          "points": [
+            {
+              "x": 23.66,
+              "y": 9,
+              "z": null
+            },
+            {
+              "x": 29.9,
+              "y": 9,
+              "z": null
+            }
+          ]
+        };
+      let zoneMap = {
+          "name": "test",
+          "facility": "DEFAULT",
+          "zones": [data],
+      }
+      let zoneMap2 = {
+        "name": "test1",
+        "facility": "DEFAULT",
+        "zones": [data],
+      }
+      const config = {
+        "zoneMaps": [ zoneMap, zoneMap2 ]
+      };
+      this.itemsense.zoneMaps.update.returns(Promise.resolve({}));
+      this.itemsense.zoneMaps.getAll.returns(Promise.resolve(config.zoneMaps));
+
+      let promise = load(stubbedIS, config);
+      config.zoneMaps[0].zones.points = newPoints;
+      config.zoneMaps[1].zones.points = newPoints;
+      return promise
+      .then(() => {
+        expect(this.itemsense.zoneMaps.update.callCount).to.equal(2);
+        expect(this.itemsense.zoneMaps.update.getCall(1).args).to.deep.equal([config.zoneMaps[1]])                    
+        expect(this.itemsense.zoneMaps.update.getCall(0).args).to.deep.equal([config.zoneMaps[0]])                    
+      });
     });
 
     it('should create a user without error', ()=>{
