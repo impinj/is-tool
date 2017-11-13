@@ -5,7 +5,7 @@ const program = require('commander');
 program
   .usage('<cmd> [options]')
   .command('load <file>', 'load configuration file into ItemSense')
-  .command('save [file]', 'save configuration file into ItemSense')
+  .command('save [file]', 'save ItemSense configuration to file')
   .command('convert <file>', 'Convert ItemSense configuration from 2016r4 format to 2016r6')
   .command('clear', 'removes all configuration from an ItemSense instance')
   .command('set <file>', 'Removes all config except Impinj defaults and config in a passed file')
