@@ -1,8 +1,10 @@
 #! /usr/bin/env node
 const program = require('commander');
+const pkg = require('../package.json');
 
 
 program
+  .version(pkg.version)
   .usage('<cmd> [options]')
   .command('load <file>', 'load configuration file into ItemSense')
   .command('save [file]', 'save configuration file into ItemSense')
