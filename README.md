@@ -63,11 +63,7 @@ is-tool load -i 10.200.90.177 --addpassword itemsense-config.json
 is-tool convert -t to2016r6 itemsense2016r4-config.json
 ```
 ```
-<<<<<<< HEAD
 is-tool convert -t threshold itemsense2016r4-config.json
-=======
-is-tool convert itemsense2016r4-config.json
->>>>>>> 6e446cf2fde971d5d33f407e8e5481e2ecbc488f
 ```
 
 ### Clear All Config
