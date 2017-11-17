@@ -65,9 +65,9 @@ if (!program.args || program.args.length === 0) {
 
 let converter;
 if (program.converttype === 'to2016r6') {
-  converter = require('../lib/convert-r4-to-r6');
+  converter = require('../lib/convert/r4-to-r6');
 } else {
-  converter = require('../lib/convert-threshold');
+  converter = require('../lib/convert/threshold');
 }
 
 loadFile(program.args[0]).then(
