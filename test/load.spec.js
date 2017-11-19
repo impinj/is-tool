@@ -1251,10 +1251,10 @@ describe('When loading an object, it', () => {
           facility: "hello",
           readerArrangement: "SIDE_BY_SIDE",
           readers: {
-            'xSpan-11-F0-0A': { antennaConfigurationId: "2" },
-            'xSpan-11-F0-30': { antennaConfigurationId: "1" },
-            'xSpan-11-EF-BB': { antennaConfigurationId: "2" },
-            'xSpan-11-F0-1F': { antennaConfigurationId: "1" }
+            'xSpan-11-F0-0A': { antennaConfigurationId: 2 },
+            'xSpan-11-F0-30': { antennaConfigurationId: 1 },
+            'xSpan-11-EF-BB': { antennaConfigurationId: 2 },
+            'xSpan-11-F0-1F': { antennaConfigurationId: 1 }
           }
         }]
       }
