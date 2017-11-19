@@ -154,6 +154,15 @@ describe('When loading an object, it', () => {
         "floor": "1"
       },
       "facility": "test",
+      "features": {
+        "ANTENNA_HUB": {
+          "status": "ENABLED",
+          "statusLastUpdated": "2017-10-18T21:37:07.442Z",
+          "requestStatus": "IDLE",
+          "requestStatusLastUpdated": null,
+          "requestTargetStatus": null
+        }
+      },
       "labels": null,
       "readerZone": "xarray115516",
       "antennaZones": null
@@ -164,7 +173,7 @@ describe('When loading an object, it', () => {
 
     this.itemsense.readerDefinitions.update.returns(Promise.resolve({}));
     const promise = load(this.itemsense, config);
-
+    delete data.features;
     return expect(promise).to.eventually.be.fulfilled
       .then(
         () => {
