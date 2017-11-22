@@ -154,6 +154,15 @@ describe('When loading an object, it', () => {
         "floor": "1"
       },
       "facility": "test",
+      "features": {
+        "ANTENNA_HUB": {
+          "status": "ENABLED",
+          "statusLastUpdated": "2017-10-18T21:37:07.442Z",
+          "requestStatus": "IDLE",
+          "requestStatusLastUpdated": null,
+          "requestTargetStatus": null
+        }
+      },
       "labels": null,
       "readerZone": "xarray115516",
       "antennaZones": null
@@ -164,7 +173,7 @@ describe('When loading an object, it', () => {
 
     this.itemsense.readerDefinitions.update.returns(Promise.resolve({}));
     const promise = load(this.itemsense, config);
-
+    delete data.features;
     return expect(promise).to.eventually.be.fulfilled
       .then(
         () => {
@@ -469,6 +478,65 @@ describe('When loading an object, it', () => {
             "recipe update function called incorrect number of times"
           );
         });
+    });
+
+    it('should load recipes with thresholds without error.', ()=>{
+      let stubbedIS = this.itemsense;
+      let thresholdData = {
+        id: 4,
+        name: 'side by side 1',
+        facility: "hello",
+        readerArrangement: "SIDE_BY_SIDE",
+        readers: {
+          'xSpan-11-F0-0A': {
+            antennaConfigurationId: "1"
+          },
+          'xSpan-11-F0-30': {
+            antennaConfigurationId: "2"
+          },
+          'xSpan-11-EF-BB': {
+            antennaConfigurationId: "1"
+          },
+          'xSpan-11-F0-1F': {
+            antennaConfigurationId: "2"
+          }
+        }
+      };
+      let recipeData = {
+        "name": "IMPINJ_All_Thresholds",
+        "type": "THRESHOLD",
+        "readerConfigurationName": "IMPINJ_All_Thresholds",
+        "readerConfigurations": {},
+        "thresholdIds": [4, 3 , 63],
+        "profile": "hello",
+        "iterationDataLogEnabled": false
+      };
+
+      let existingRecord = [{
+        id: 4,
+        name: 'side by side 2',
+      }];
+      
+      const config = {
+        thresholds: [thresholdData],
+        recipes: [recipeData]
+      };
+      let promise = load(stubbedIS, config);
+      
+      const newthreshold = Object.assign({}, thresholdData);
+      newthreshold.id = 11;
+      this.itemsense.thresholds.create.returns(Promise.resolve(newthreshold));
+      this.itemsense.thresholds.getAll.returns(Promise.resolve(existingRecord));
+      this.itemsense.recipes.create.returns(Promise.resolve({}));
+      return expect(promise).to.eventually.be.fulfilled
+      .then(() =>{
+        expect(this.itemsense.thresholds.create.callCount).to.equal(1);
+        delete thresholdData.id;
+        expect(this.itemsense.thresholds.create.getCall(0).args).to.deep.equal([thresholdData]);
+        expect(this.itemsense.recipes.create.callCount).to.equal(1);
+        recipeData.thresholdIds = [11];
+        expect(this.itemsense.recipes.create.getCall(0).args).to.deep.equal([recipeData]);
+      });
     });
 
     it('should create a zoneMap without error', ()=>{
@@ -1183,10 +1251,10 @@ describe('When loading an object, it', () => {
           facility: "hello",
           readerArrangement: "SIDE_BY_SIDE",
           readers: {
-            'xSpan-11-F0-0A': { antennaConfigurationId: "2" },
-            'xSpan-11-F0-30': { antennaConfigurationId: "1" },
-            'xSpan-11-EF-BB': { antennaConfigurationId: "2" },
-            'xSpan-11-F0-1F': { antennaConfigurationId: "1" }
+            'xSpan-11-F0-0A': { antennaConfigurationId: 2 },
+            'xSpan-11-F0-30': { antennaConfigurationId: 1 },
+            'xSpan-11-EF-BB': { antennaConfigurationId: 2 },
+            'xSpan-11-F0-1F': { antennaConfigurationId: 1 }
           }
         }]
       }
