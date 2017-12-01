@@ -2,7 +2,7 @@ const clear = require('../is-tool-lib').clear;
 const Itemsense = require('itemsense-node');
 const helpers = require('./helpers/help-functions');
 
-function getResult(clause, failMessage){
+function getResult(clause, failMessage) {
   return (clause ? Promise.resolve() : Promise.reject(new Error(failMessage)));
 }
 
@@ -34,20 +34,23 @@ describe('When clearing configuration from itemsense, it', () => {
     this.itemsense = new Itemsense(itemsenseConfig);
     this.itemsense = helpers.setupISStubs(this.itemsense, this.keys, 'getAll');
     this.itemsense = helpers.setupISStubs(this.itemsense, this.keys, 'delete');
+    this.itemsense = helpers.setupISStubs(this.itemsense, ['currentZoneMap'], 'clear');
   });
 
   after(() => {
     this.itemsense = helpers.restoreISStubs(this.itemsense, this.keys, 'getAll');
     this.itemsense = helpers.restoreISStubs(this.itemsense, this.keys, 'delete');
+    this.itemsense = helpers.restoreISStubs(this.itemsense, ['currentZoneMap'], 'clear');
   });
 
   afterEach(() => {
     this.itemsense = helpers.resetISStubs(this.itemsense, this.keys, 'getAll');
     this.itemsense = helpers.resetISStubs(this.itemsense, this.keys, 'delete');
+    this.itemsense = helpers.resetISStubs(this.itemsense, ['currentZoneMap'], 'clear');
   });
 
   it('should return a rejected promise when null itemsense connection is passed', () => {
-    let promise = clear(null);
+    const promise = clear(null);
     return expect(promise).to.eventually.be.rejectedWith('itemsense object is null');
   });
 
@@ -64,10 +67,10 @@ describe('When clearing configuration from itemsense, it', () => {
       recipes: [],
     };
     setReturns(config, stubbedIS, this.keys);
-    let promise = clear(stubbedIS);
+    const promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.fulfilled
-    .then(() => {
-      return getResult(
+    .then(() => (
+      getResult(
         stubbedIS.facilities.getAll.calledOnce
         && stubbedIS.recipes.getAll.calledOnce
         && stubbedIS.readerDefinitions.getAll.calledOnce
@@ -81,7 +84,7 @@ describe('When clearing configuration from itemsense, it', () => {
         && !stubbedIS.users.delete.called
         && !stubbedIS.recipes.delete.called
       )
-    });
+    ));
   });
 
   it('should call delete on each config item returned', ()=>{
@@ -120,11 +123,12 @@ describe('When clearing configuration from itemsense, it', () => {
     };
     setReturns(config, stubbedIS, this.keys);
 
-    let promise = clear(stubbedIS);
+    const promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.fulfilled
-    .then(() => {
-      return getResult(
-        stubbedIS.facilities.getAll.calledOnce
+    .then(() => (
+      getResult(
+        stubbedIS.currentZoneMap.clear.calledTwice
+        && stubbedIS.facilities.getAll.calledOnce
         && stubbedIS.recipes.getAll.calledOnce
         && stubbedIS.readerDefinitions.getAll.calledOnce
         && stubbedIS.readerConfigurations.getAll.calledOnce
@@ -136,9 +140,8 @@ describe('When clearing configuration from itemsense, it', () => {
         && !stubbedIS.zoneMaps.delete.called
         && !stubbedIS.users.delete.called
         && !stubbedIS.recipes.delete.called
-
       )
-    });
+    ));
   });
 
   it('should return a failed promise when the call to itemsense returns an error', ()=>{

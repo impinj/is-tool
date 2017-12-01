@@ -3,7 +3,8 @@ const sinon = require('sinon');
 function setupISStubs(itemsense, keys, method) {
   /* eslint-disable no-param-reassign */
   keys.forEach((key) => {
-    itemsense[key][method] = sinon.stub(itemsense[key], method);
+    const stub = sinon.stub(itemsense[key], method);
+    itemsense[key][method] = stub;
   });
   return itemsense;
 }
