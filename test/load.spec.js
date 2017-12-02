@@ -171,14 +171,16 @@ describe('When loading an object, it', () => {
       "readerDefinitions": [data]
     };
 
+    const testData = Object.assign({}, data);
     this.itemsense.readerDefinitions.update.returns(Promise.resolve({}));
     const promise = load(this.itemsense, config);
-    delete data.features;
+    delete testData.features;
+    testData.agentIdentifier = testData.name;
     return expect(promise).to.eventually.be.fulfilled
       .then(
         () => {
           data.agentIdentifier = data.name;
-          expect(this.itemsense.readerDefinitions.create.args[0]).to.deep.equal([data]);
+          expect(this.itemsense.readerDefinitions.create.args[0]).to.deep.equal([testData]);
           expect(this.itemsense.readerDefinitions.create.callCount).to.equal(1);
         }
       );
@@ -248,6 +250,7 @@ describe('When loading an object, it', () => {
             "floor": "1"
           },
           "facility": "IDL",
+          "features": {},
           "labels": null,
           "readerZone": "xarray115516",
           "antennaZones": null
@@ -269,6 +272,7 @@ describe('When loading an object, it', () => {
             "floor": "1"
           },
           "facility": "IDL",
+          "features": {},
           "labels": null,
           "readerZone": "xarray115516",
           "antennaZones": null
