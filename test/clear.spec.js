@@ -67,6 +67,7 @@ describe('When clearing configuration from itemsense, it', () => {
       recipes: [],
     };
     setReturns(config, stubbedIS, this.keys);
+    helpers.setReturns(stubbedIS, ['currentZoneMap'], 'clear');
     const promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.fulfilled
     .then(() => (
@@ -87,7 +88,7 @@ describe('When clearing configuration from itemsense, it', () => {
     ));
   });
 
-  it('should call delete on each config item returned', ()=>{
+  it('should call delete on each config item returned', () => {
     const stubbedIS = this.itemsense;
     const config = {
       facilities: [
@@ -122,9 +123,10 @@ describe('When clearing configuration from itemsense, it', () => {
       recipes: []
     };
     setReturns(config, stubbedIS, this.keys);
-
+    helpers.setReturns(stubbedIS, ['currentZoneMap'], 'clear');
+    
     const promise = clear(stubbedIS);
-    return expect(promise).to.eventually.be.fulfilled
+    return promise
     .then(() => (
       getResult(
         stubbedIS.currentZoneMap.clear.calledTwice
@@ -144,7 +146,7 @@ describe('When clearing configuration from itemsense, it', () => {
     ));
   });
 
-  it('should return a failed promise when the call to itemsense returns an error', ()=>{
+  it('should return a failed promise when the call to itemsense returns an error', () => {
     const stubbedIS = this.itemsense;
     const config = {
       facilities: [
@@ -179,11 +181,12 @@ describe('When clearing configuration from itemsense, it', () => {
       recipes: []
     };
     setReturns(config, stubbedIS, this.keys);
+    helpers.setReturns(stubbedIS, ['currentZoneMap'], 'clear');
     stubbedIS.readerConfigurations.delete.returns(Promise.reject('test rejection'));
 
     let promise = clear(stubbedIS);
     return expect(promise).to.eventually.be.rejected
-    && expect(promise).to.eventually.be.rejectedWith('test rejection');s
+    && expect(promise).to.eventually.be.rejectedWith('test rejection');
   });
 
   it('should not remove Admin nor ReaderAgent user nor DEFAULT facility', () =>{
